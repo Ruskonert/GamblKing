@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="MainScreen" maxHeight="-Infinity" maxWidth="-Infinity"
+            minHeight="-Infinity" minWidth="-Infinity" prefHeight="536.0" prefWidth="804.0"
+            xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ruskonert.GameServer.program.component.ProgramComponent">
+   <AnchorPane focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="80.0" prefWidth="804.0" style="-fx-background-color: #155d92;">
+      <ImageView fx:id="ConsoleMenuButton" fitHeight="56.0" fitWidth="56.0" layoutX="14.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+         <Image url="@icons8-console.png" />
+      </ImageView>
+      <ImageView fx:id="SettingMenuButton" fitHeight="56.0" fitWidth="56.0" layoutX="89.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+         <Image url="@icons8-settings-filled.png" />
+      </ImageView>
+      <ImageView fx:id="CloseMenuButton" fitHeight="56.0" fitWidth="56.0" layoutX="164.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+         <Image url="@icons8-shutdown-filled.png" />
+      </ImageView>
+   </AnchorPane>
+   <AnchorPane layoutY="80.0" prefHeight="461.0" prefWidth="804.0" style="-fx-background-color: #17689F;">
+      <Label layoutX="15.0" layoutY="10.0" text="Output Console" textFill="WHITE" />
+      <TextArea fx:id="ConsoleScreen" layoutX="15.0" layoutY="31.0" prefHeight="334.0" prefWidth="596.0" />
+      <JFXButton fx:id="MainStartButton" layoutX="15.0" layoutY="407.0" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #155d92; -fx-border-radius: 5em;" text="Start" textFill="WHITE" textOverrun="WORD_ELLIPSIS" />
+      <JFXButton fx:id="MainCancelButton" layoutX="333.0" layoutY="407.0" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #155d92; -fx-border-radius: 5em;" text="Cancel" textFill="WHITE" textOverrun="WORD_ELLIPSIS" />
+      <JFXButton fx:id="MainClearButton" layoutX="174.0" layoutY="407.0" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #155d92; -fx-border-radius: 5em;" text="Clear" textFill="WHITE" textOverrun="WORD_ELLIPSIS" />
+      <JFXButton fx:id="MainExitButton" layoutX="490.0" layoutY="407.0" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #155d92; -fx-border-radius: 5em;" text="Exit" textFill="WHITE" textOverrun="WORD_ELLIPSIS" />
+      <TextField fx:id="ConsoleMessageField" layoutX="15.0" layoutY="375.0" prefHeight="21.0" prefWidth="516.0" promptText="Command or message">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </TextField>
+      <JFXButton fx:id="ConsoleSendButton" layoutX="543.0" layoutY="372.0" prefHeight="27.0" prefWidth="68.0" style="-fx-background-color: #155d92; -fx-border-radius: 5em;" text="Send" textFill="WHITE" textOverrun="WORD_ELLIPSIS" />
+   </AnchorPane>
+   <AnchorPane layoutY="80.0" prefHeight="461.0" prefWidth="804.0" style="-fx-background-color: #17689F;" visible="false" />
+   <AnchorPane layoutY="75.0" prefHeight="487.0" prefWidth="804.0" style="-fx-background-color: #17689F;" visible="false">
+      <Label layoutX="14.0" layoutY="11.0" text="설정">
+         <font>
+            <Font size="47.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="0.009615384615384581" startY="1.0">
+               <stops>
+                  <Stop color="BLACK" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <Label layoutX="23.0" layoutY="99.0" text="디버깅 모드 활성화">
+         <font>
+            <Font size="18.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="0.009615384615384581" startY="1.0">
+               <stops>
+                  <Stop color="BLACK" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <Label layoutX="23.0" layoutY="122.0" text="시스템 메세지를 같이 출력합니다." textFill="WHITE">
+         <font>
+            <Font name="AppleGothic Regular" size="10.0" />
+         </font>
+      </Label>
+      <Label layoutX="23.0" layoutY="67.0" text="Settings">
+         <font>
+            <Font size="12.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="0.009615384615384581" startY="1.0">
+               <stops>
+                  <Stop color="BLACK" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <JFXToggleButton fx:id="IsDebugMode" layoutX="213.0" layoutY="88.0" text="활성화" textFill="WHITE" toggleColor="#1c7dc5" />
+      <Label layoutX="23.0" layoutY="150.0" text="IP 표시하기">
+         <font>
+            <Font size="18.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="0.009615384615384581" startY="1.0">
+               <stops>
+                  <Stop color="BLACK" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <Label layoutX="23.0" layoutY="173.0" text="현재 접속중인 IP를 보여줍니다.">
+         <font>
+            <Font name="AppleGothic Regular" size="10.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="0.009615384615384581" startY="1.0">
+               <stops>
+                  <Stop color="BLACK" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <Label layoutX="23.0" layoutY="206.0" text="Background Color">
+         <font>
+            <Font size="18.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="0.009615384615384581" startY="1.0">
+               <stops>
+                  <Stop color="BLACK" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <Label layoutX="24.0" layoutY="230.0" text="배경화면의 색깔을 설정합니다.">
+         <font>
+            <Font name="AppleGothic Regular" size="10.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="0.009615384615384581" startY="1.0">
+               <stops>
+                  <Stop color="BLACK" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <JFXToggleButton fx:id="IsShowingAddress" layoutX="213.0" layoutY="139.0" text="활성화" textFill="WHITE" toggleColor="#1c7dc5" />
+      <JFXButton fx:id="SaveButton" layoutX="626.0" layoutY="400.0" prefHeight="40.0" prefWidth="146.0" style="-fx-background-color: #155d92; -fx-border-radius: 5em;" text="Save" textFill="WHITE" textOverrun="WORD_ELLIPSIS" />
+      <JFXButton fx:id="CancelButton" layoutX="462.0" layoutY="400.0" prefHeight="40.0" prefWidth="146.0" style="-fx-background-color: #155d92; -fx-border-radius: 5em;" text="Cancel" textFill="WHITE" textOverrun="WORD_ELLIPSIS" />
+   </AnchorPane>
+</AnchorPane>
