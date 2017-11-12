@@ -29,6 +29,9 @@ public class GameServerFramework implements Server
         ConsoleSender consoleSenderFramework = new ConsoleSenderFramework(this);
         this.consoleSender = consoleSenderFramework;
 
+        BindConnection connection = new BindConnection();
+        this.connectionServer = connection;
+
         try
         {
             ReflectionUtil.Companion.setStaticField(GameServer.class, "server", this);
