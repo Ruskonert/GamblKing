@@ -1,7 +1,8 @@
-package com.ruskonert.GameEngine.program.event;
+package com.ruskonert.GameEngine.event.program;
 
 import com.ruskonert.GameEngine.GameServer;
-import com.ruskonert.GameEngine.Listener;
+import com.ruskonert.GameEngine.event.LayoutListener;
+
 import com.ruskonert.GameEngine.MessageType;
 import com.ruskonert.GameEngine.program.AppFramework;
 import com.ruskonert.GameEngine.program.ProgramManager;
@@ -12,7 +13,7 @@ import com.ruskonert.GameEngine.util.ReflectionUtil;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 
-public class ConsoleLayoutEvent implements Listener
+public class ConsoleLayoutEvent implements LayoutListener
 {
     @Override
     public void register(Object handleInstance)

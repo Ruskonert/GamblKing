@@ -1,11 +1,14 @@
 package com.ruskonert.GameEngine.program;
 
 import com.ruskonert.GameEngine.GameServer;
-import com.ruskonert.GameEngine.Listener;
+import com.ruskonert.GameEngine.event.EventCollection;
+import com.ruskonert.GameEngine.event.EventListener;
+import com.ruskonert.GameEngine.event.Handle;
+import com.ruskonert.GameEngine.event.LayoutListener;
 import com.ruskonert.GameEngine.framework.GameServerFramework;
 import com.ruskonert.GameEngine.program.component.ProgramComponent;
-import com.ruskonert.GameEngine.program.event.ConsoleLayoutEvent;
-import com.ruskonert.GameEngine.program.event.SettingLayoutEvent;
+import com.ruskonert.GameEngine.event.program.ConsoleLayoutEvent;
+import com.ruskonert.GameEngine.event.program.SettingLayoutEvent;
 import com.ruskonert.GameEngine.server.ConsoleSender;
 import com.ruskonert.GameEngine.server.Server;
 import com.ruskonert.GameEngine.util.SystemUtil;
@@ -15,6 +18,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.lang.reflect.Method;
 
 public abstract class AppFramework
 {
@@ -44,11 +49,22 @@ public abstract class AppFramework
         this.onEnable();
     }
 
-    protected void registerEvent(Listener listener)
+    protected void registerEvent(LayoutListener listener)
     {
         listener.register(this);
     }
 
+    protected final void registerEvent(EventListener listener)
+    {
+        Class<?> target = listener.getClass();
+        for (Method c : target.getDeclaredMethods())
+        {
+            if (c.getDeclaredAnnotation(Handle.class) != null)
+            {
+                EventCollection.registerMethod(c.getParameters()[0].getType(), c);
+            }
+        }
+    }
 
     private void BindServerConnection() throws NoSuchFieldException, IllegalAccessException
     {
