@@ -4,8 +4,8 @@ import com.ruskonert.GameServer.asm.TargetReference;
 import com.ruskonert.GameServer.asm.TargetBuilder;
 import com.ruskonert.GameServer.server.ConsoleSender;
 import com.ruskonert.GameServer.MessageType;
-
 import com.ruskonert.GameServer.server.Server;
+
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -27,9 +27,9 @@ public class ConsoleSenderFramework extends TargetBuilder<ConsoleSenderFramework
     private TextArea consoleScreen;
     @Override public TextArea getConsoleScreen() { return this.consoleScreen; }
 
-    @TargetReference(target="ProgramComponent", value="ConsoleMessageField#textProperty")
+    @TargetReference(target="ProgramComponent", value="ConsoleScreen#textProperty")
     private StringProperty messageProperty;
-    public StringProperty getMessageProperty() { return this.messageProperty; }
+    @Override public StringProperty getMessageProperty() { return this.messageProperty; }
 
     private Server server;
     public Server getServer() { return this.server; }
@@ -61,12 +61,12 @@ public class ConsoleSenderFramework extends TargetBuilder<ConsoleSenderFramework
 
     @Override public final void clearCommandField() { this.commandField.setText("");}
 
-    public void dispatch(String command, List<String> args)
+    private void dispatch(String command, List<String> args)
     {
         //TODO("UP TO DATE");
     }
 
-    public void messageDispatch(String message)
+    public void dispatch(String message)
     {
         String command = this.commandField.getText();
         if(command.startsWith("/"))
