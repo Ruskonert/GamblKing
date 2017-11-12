@@ -9,4 +9,6 @@ public interface Player extends MessageDispatcher
     String getNickname();
 
     String getPassword();
+
+    String getLastMessage();
 }

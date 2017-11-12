@@ -1,4 +1,11 @@
 package com.ruskonert.GameEngine.connect;
 
-public class BindConnection {
+import java.util.List;
+
+public class BindConnection
+{
+    private static List<DatagramServerPacket> serverPackets;
+
+    private int port;
+    public int getPort() { return port; }
 }

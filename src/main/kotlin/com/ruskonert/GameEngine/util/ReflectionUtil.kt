@@ -12,5 +12,12 @@ class ReflectionUtil
             field.isAccessible = true
             field.set(null, value)
         }
+
+        fun invokeMethod(target: Any, methodName : String, vararg args : Any?) : Any?
+        {
+            val met = target.javaClass.getMethod(methodName)
+            met.isAccessible = true
+            return met.invoke(target, args)
+        }
     }
 }

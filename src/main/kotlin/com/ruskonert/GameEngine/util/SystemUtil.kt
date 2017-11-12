@@ -1,7 +1,7 @@
 @file:JvmName("SystemUtil")
 package com.ruskonert.GameEngine.util
 
-import java.io.File
+import java.io.*
 import java.net.URL
 import javax.swing.JOptionPane
 
@@ -47,6 +47,23 @@ class SystemUtil
                     count++
                 }
             }
+        }
+
+        @Throws(IOException::class, ClassNotFoundException::class)
+        fun arrayToObject(buf: ByteArray): Any
+        {
+            val bis = ByteArrayInputStream(buf)
+            val `in` = ObjectInputStream(bis)
+            return `in`.readObject()
+        }
+
+        @Throws(IOException::class)
+        fun objectToArray(obj: Any): ByteArray
+        {
+            val bos = ByteArrayOutputStream()
+            val out = ObjectOutputStream(bos)
+            out.writeObject(obj)
+            return bos.toByteArray()
         }
     }
 }

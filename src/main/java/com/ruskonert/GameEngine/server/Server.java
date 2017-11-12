@@ -1,5 +1,6 @@
 package com.ruskonert.GameEngine.server;
 
+import com.ruskonert.GameEngine.connect.BindConnection;
 import com.ruskonert.GameEngine.entity.OfflinePlayer;
 import com.ruskonert.GameEngine.entity.Player;
 
@@ -9,6 +10,8 @@ import java.util.Map;
 
 public interface Server
 {
+    BindConnection getBindConnection();
+
     Collection<? extends OfflinePlayer> getOfflinePlayer();
 
     Player getPlayer();

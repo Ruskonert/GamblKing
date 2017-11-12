@@ -1,46 +1,44 @@
 package com.ruskonert.GameEngine.connect;
 
+import com.ruskonert.GameEngine.GameServer;
+import com.ruskonert.GameEngine.util.SystemUtil;
 import javafx.concurrent.Task;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.SocketException;
 
-public class DatagramServerPacket extends Task<Void>
+public abstract class DatagramServerPacket extends Task<Void>
 {
     private DatagramSocket socket;
-    private DatagramPacket packet;
+    public DatagramSocket getSocket() { return this.socket; }
+
+    public DatagramServerPacket() { this(GameServer.getServer().getBindConnection().getPort()); }
+    public DatagramServerPacket(int port)
+    {
+        try { socket = new DatagramSocket(port); }
+        catch (SocketException e)
+        {
+            SystemUtil.Companion.error(e);
+        }
+    }
 
     @Override
-    protected Void call() throws Exception
+    protected final Void call() throws Exception
     {
         while(true)
         {
             byte[] inbuf = new byte[256];
-            this.packet = new DatagramPacket(inbuf, inbuf.length);
-
+            DatagramPacket packet = new DatagramPacket(inbuf, inbuf.length);
             socket.receive(packet);
+            onReceive(SystemUtil.Companion.arrayToObject(packet.getData()));
+
+            socket.close();
         }
     }
 
-    public Object arrayToObject(byte[] buf) throws IOException, ClassNotFoundException
+    protected void onReceive(Object handleInstance)
     {
-        ByteArrayInputStream bis = new ByteArrayInputStream(buf);
-        ObjectInput in = new ObjectInputStream(bis);
-        return in.readObject();
-    }
 
-    public byte[] objectToArray(Object obj) throws IOException
-    {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutput out = new ObjectOutputStream(bos);
-        out.writeObject(obj);
-        return bos.toByteArray();
     }
 }
