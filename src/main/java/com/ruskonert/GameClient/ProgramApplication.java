@@ -1,4 +1,18 @@
 package com.ruskonert.GameClient;
 
-public class ProgramApplication {
+import javafx.application.Application;
+import javafx.stage.Stage;
+
+public class ProgramApplication extends Application
+{
+    public static void main(String[] args)
+    {
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception
+    {
+        primaryStage.show();
+    }
 }
