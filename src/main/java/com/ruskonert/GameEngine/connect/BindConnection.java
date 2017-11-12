@@ -1,11 +1,28 @@
 package com.ruskonert.GameEngine.connect;
 
-import java.util.List;
-
+import javafx.application.Platform;
 public class BindConnection
 {
-    private static List<DatagramServerPacket> serverPackets;
+    public void start()
+    {
+        Platform.runLater(() -> {
+            ServerConnectionPacket serverPacket = new ServerConnectionPacket(7334);
+            try {
+                serverPacket.task();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+}
 
-    private int port;
-    public int getPort() { return port; }
+class ServerConnectionPacket extends DatagramServerPacket
+{
+    public ServerConnectionPacket(int port) { super(port); }
+
+    @Override
+    protected void onReceive(Object handleInstance)
+    {
+        super.onReceive(handleInstance);
+    }
 }

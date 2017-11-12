@@ -8,6 +8,7 @@ import com.ruskonert.GameEngine.program.AppFramework;
 import com.ruskonert.GameEngine.program.ProgramManager;
 import com.ruskonert.GameEngine.program.component.ProgramComponent;
 import com.ruskonert.GameEngine.server.ConsoleSender;
+import com.ruskonert.GameEngine.server.Server;
 import com.ruskonert.GameEngine.util.ReflectionUtil;
 
 import javafx.application.Platform;
@@ -29,6 +30,7 @@ public class ConsoleLayoutEvent implements LayoutListener
         component.getMainStartButton().setOnMouseClicked(event -> {
             component.getMainStartButton().setText("Running");
             component.getMainStartButton().setDisable(true);
+            GameServer.getServer().getBindConnection().start();
         });
 
         // Console send button clicked on mouse
