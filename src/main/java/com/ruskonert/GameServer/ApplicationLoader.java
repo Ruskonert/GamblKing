@@ -4,8 +4,8 @@ import com.ruskonert.GameServer.data.Pointer;
 import com.ruskonert.GameServer.program.AppFramework;
 import com.ruskonert.GameServer.program.ProgramManager;
 import com.ruskonert.GameServer.program.component.ProgramComponent;
-
 import com.ruskonert.GameServer.util.SystemUtil;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
@@ -22,8 +22,8 @@ import java.io.File;
 
 public final class ApplicationLoader extends Application
 {
-    private static Stage ProloadStage;
-    public static Stage getProloadStage() { return ProloadStage; }
+    private static Stage PreloadStage;
+    public static Stage getPreloadStage() { return PreloadStage; }
 
     public static void main(String[] args){ launch(); }
 
@@ -42,7 +42,7 @@ public final class ApplicationLoader extends Application
                     AppFramework framework = new AppFramework();
                     try
                     {
-                        ProloadStage.close();
+                        PreloadStage.close();
                         framework.start(new Stage());
                     }
                     catch (Exception e)
@@ -69,7 +69,7 @@ public final class ApplicationLoader extends Application
     private void createSafetyWindow() throws Exception
     {
         Stage stage = new Stage();
-        ProloadStage = stage;
+        PreloadStage = stage;
         FXMLLoader loader = new FXMLLoader(ProgramManager.getLayout(this.getClass()));
         Parent parent = loader.load();
         Scene scene = new Scene(parent, 600, 400);
@@ -93,8 +93,7 @@ public final class ApplicationLoader extends Application
                 checkFileResource(folder, label, process);
                 Platform.runLater(() -> label.setText("서버 관리 프로그램을 열고 있습니다..."));
                 Platform.runLater(() -> ProgramManager.getPreloadComponent().getLoadingProgressBar().setProgress(ProgressBar.INDETERMINATE_PROGRESS));
-
-                Thread.sleep(2000L);
+                Thread.sleep(3000L);
                 Thread thread = new Thread(syncStart);
                 thread.start();
 
@@ -142,7 +141,7 @@ public final class ApplicationLoader extends Application
                 Platform.runLater(() -> label.setText("Checking for file: " + fileEntry.toString()));
                 progress.ptr++;
             }
-            Thread.sleep(100L);
+            Thread.sleep(10L);
         }
     }
 

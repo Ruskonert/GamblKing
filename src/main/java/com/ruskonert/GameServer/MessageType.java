@@ -7,7 +7,10 @@ public enum MessageType
     ERROR("ERROR", "$r");
 
     private String value;
+    public String getValue() { return this.value; }
+
     private String colorType;
+    public String getColorType() { return this.colorType; }
 
     MessageType(String value, String colorType)
     {

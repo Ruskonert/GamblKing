@@ -2,9 +2,13 @@ package com.ruskonert.GameServer.program;
 
 import com.ruskonert.GameServer.GameServer;
 import com.ruskonert.GameServer.MessageType;
+import com.ruskonert.GameServer.framework.GameServerFramework;
 import com.ruskonert.GameServer.program.component.ProgramComponent;
 import com.ruskonert.GameServer.server.ConsoleSender;
 
+import com.ruskonert.GameServer.util.ReflectionUtil;
+import com.ruskonert.GameServer.util.SystemUtil;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,15 +29,23 @@ public final class AppFramework
         this.onEnable();
     }
 
-    private void BindServerConnection()
+    private void BindServerConnection() throws NoSuchFieldException, IllegalAccessException
     {
-
+        GameServerFramework.generate();
     }
-
 
     protected synchronized void onEnableInner()
     {
-        this.BindServerConnection();
+        try
+        {
+            this.BindServerConnection();
+        }
+        catch (NoSuchFieldException | IllegalAccessException e)
+        {
+            SystemUtil.Companion.error(e);
+            return;
+        }
+
         ProgramComponent component = ProgramManager.getProgramComponent();
         ConsoleSender sender = GameServer.getServer().getConsoleSender();
 

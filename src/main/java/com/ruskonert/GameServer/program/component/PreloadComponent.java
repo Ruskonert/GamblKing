@@ -1,6 +1,5 @@
 package com.ruskonert.GameServer.program.component;
 
-import com.ruskonert.GameServer.GameServer;
 import com.ruskonert.GameServer.program.ProgramManager;
 import com.ruskonert.GameServer.util.ReflectionUtil;
 
@@ -19,7 +18,7 @@ import java.util.ResourceBundle;
  *
  * @author Ruskonert(Junwon Kim)
  * @see com.ruskonert.GameServer.program.AppFramework
- * @see GameServer#getPreloadComponent()
+ * @see com.ruskonert.GameServer.program.ProgramManager#getPreloadComponent
  */
 public final class PreloadComponent implements Initializable
 {

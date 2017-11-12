@@ -1,6 +1,5 @@
 package com.ruskonert.GameServer.program.component;
 
-import com.ruskonert.GameServer.GameServer;
 import com.ruskonert.GameServer.program.ProgramManager;
 import com.ruskonert.GameServer.util.ReflectionUtil;
 
@@ -23,7 +22,7 @@ import java.util.ResourceBundle;
  *
  * @author Ruskonert(Junwon Kim)
  * @see com.ruskonert.GameServer.program.AppFramework
- * @see GameServer#getProgramComponent()
+ * @see com.ruskonert.GameServer.program.ProgramManager#getProgramComponent
  */
 public final class ProgramComponent implements Initializable
 {
