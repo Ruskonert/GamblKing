@@ -3,6 +3,7 @@ package com.ruskonert.GameEngine;
 import com.ruskonert.GameEngine.entity.OfflinePlayer;
 import com.ruskonert.GameEngine.entity.Player;
 import com.ruskonert.GameEngine.server.Channel;
+import com.ruskonert.GameEngine.server.ConsoleSender;
 import com.ruskonert.GameEngine.server.Server;
 
 import java.util.Collection;
@@ -36,6 +37,8 @@ public final class GameServer
     }
 
     public static Channel getChannel(String channelName) { return  server.getChannel(channelName); }
+
+    public static ConsoleSender getConsoleSender() { return server.getConsoleSender(); }
 
     public static Map<String, Channel> getChannels() { return server.getChannels(); }
 }

@@ -11,8 +11,8 @@ import com.ruskonert.GameEngine.listener.PlayerConnectListener;
 import com.ruskonert.GameEngine.program.component.ProgramComponent;
 import com.ruskonert.GameEngine.server.ConsoleSender;
 import com.ruskonert.GameEngine.server.Server;
-import com.ruskonert.GameEngine.util.SystemUtil;
-
+import com.ruskonert.GameEngine.util.SystemUtil
+        ;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

@@ -4,6 +4,7 @@ import com.ruskonert.GameEngine.connect.BindConnection;
 import com.ruskonert.GameEngine.entity.OfflinePlayer;
 import com.ruskonert.GameEngine.entity.Player;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Map;
@@ -25,4 +26,7 @@ public interface Server
     Channel getChannel(String channelName);
 
     Map<String,Channel> getChannels();
+
+    File getDataFolder();
+
 }

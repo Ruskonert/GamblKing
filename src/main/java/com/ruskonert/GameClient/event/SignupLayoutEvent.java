@@ -1,10 +1,10 @@
 package com.ruskonert.GameClient.event;
 
+import com.ruskonert.GameClient.connect.RegisterConnection;
 import com.ruskonert.GameClient.program.ClientProgramManager;
+import com.ruskonert.GameClient.program.SignupApplication;
 import com.ruskonert.GameClient.program.component.SignupComponent;
 import com.ruskonert.GameEngine.event.LayoutListener;
-import com.ruskonert.GameEngine.util.SystemUtil;
-import javafx.application.Platform;
 
 public class SignupLayoutEvent implements LayoutListener
 {
@@ -12,9 +12,10 @@ public class SignupLayoutEvent implements LayoutListener
     public void register(Object handleInstance)
     {
         SignupComponent signupComponent = ClientProgramManager.getSignupComponent();
-        signupComponent.CancelButton.setOnMouseClicked(event -> Platform.exit());
+        signupComponent.CancelButton.setOnMouseClicked(event -> SignupApplication.getStage().close()  );
 
         signupComponent.SignUpButton.setOnMouseClicked(event -> {
+            signupComponent.ErrorMessage.setVisible(true);
             if(signupComponent.TextID.getText().isEmpty())
             {
                 signupComponent.ErrorMessage.setText("오류: 아이디가 비어있습니다."); return;
@@ -32,11 +33,19 @@ public class SignupLayoutEvent implements LayoutListener
                 signupComponent.ErrorMessage.setText("오류: 비밀번호 확인 란이 비어있습니다."); return;
             }
 
-            if(signupComponent.TextPasswordCheck.getText().equalsIgnoreCase(
+            if(signupComponent.TextPasswordCheck.getText().length() < 4)
+            {
+                signupComponent.ErrorMessage.setText("오류: 비밀번호를 최소 4자리 이상으로 설정해주십시오!"); return;
+            }
+
+            if(!signupComponent.TextPasswordCheck.getText().equalsIgnoreCase(
                     signupComponent.TextPassword.getText()))
             {
-                SystemUtil.Companion.alert("오류", "Incorrect password", "비밀번호가 일치하지 않습니다. 다시 입력하세요.");return;
+                signupComponent.ErrorMessage.setText("오류: 비밀번호가 일치하지 않습니다."); return;
             }
+
+            RegisterConnection connection = new RegisterConnection(signupComponent.TextID.getText());
+            connection.send();
         });
     }
 }

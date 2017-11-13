@@ -10,6 +10,7 @@ import com.ruskonert.GameEngine.server.Server;
 import com.ruskonert.GameEngine.util.ReflectionUtil;
 import com.ruskonert.GameEngine.util.SystemUtil;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -47,6 +48,15 @@ public class GameServerFramework implements Server
             SystemUtil.Companion.error(e);
         }
     }
+
+    private Map<String, Channel> channelMap;
+
+    private void generateChannel(String channelName)
+    {
+        ChannelFramework framework = new ChannelFramework(channelName);
+        channelMap.put(channelName, framework);
+    }
+
 
     private SimpleDateFormat simpleDateFormat;
     @Override public SimpleDateFormat getDateFormat()
@@ -89,4 +99,7 @@ public class GameServerFramework implements Server
     {
         return null;
     }
+
+    @Override
+    public File getDataFolder() { return new File("data"); }
 }

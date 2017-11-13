@@ -4,4 +4,7 @@ import com.ruskonert.GameEngine.server.Channel;
 
 public class ChannelFramework implements Channel
 {
+    public ChannelFramework(String channelName)
+    {
+    }
 }

@@ -3,6 +3,17 @@ package com.ruskonert.GameEngine.util
 import java.security.NoSuchAlgorithmException
 import java.security.MessageDigest
 import kotlin.experimental.and
+import java.io.IOException
+import com.sun.tools.internal.ws.wsdl.parser.Util.nextElement
+import java.util.jar.JarEntry
+import java.util.Enumeration
+import java.util.jar.JarFile
+import java.net.URISyntaxException
+import sun.net.www.ParseUtil.toURI
+import java.io.File
+import java.util.ArrayList
+
+
 
 class SecurityUtil
 {
@@ -25,6 +36,87 @@ class SecurityUtil
                 SHA = null
             }
             return SHA
+        }
+
+        fun getClassesForPackage(pkg: Package): List<Class<*>>
+        {
+            val pkgname = pkg.name
+
+            val classes = ArrayList<Class<*>>()
+
+            // Get a File object for the package
+            var directory: File? = null
+            val fullPath: String
+            val relPath = pkgname.replace('.', '/')
+
+            //System.out.println("ClassDiscovery: Package: " + pkgname + " becomes Path:" + relPath);
+
+            val resource = ClassLoader.getSystemClassLoader().getResource(relPath) ?: throw RuntimeException("No resource for " + relPath)
+
+            //System.out.println("ClassDiscovery: Resource = " + resource);
+            fullPath = resource.file
+            //System.out.println("ClassDiscovery: FullPath = " + resource);
+
+            try {
+                directory = File(resource.toURI())
+            } catch (e: URISyntaxException) {
+                throw RuntimeException("$pkgname ($resource) does not appear to be a valid URL / URI.  Strange, since we got it from the system...", e)
+            } catch (e: IllegalArgumentException) {
+                directory = null
+            }
+
+            //System.out.println("ClassDiscovery: Directory = " + directory);
+
+            if (directory != null && directory.exists()) {
+
+                // Get the list of the files contained in the package
+                val files = directory.list()
+                for (i in files!!.indices) {
+
+                    // we are only interested in .class files
+                    if (files[i].endsWith(".class")) {
+
+                        // removes the .class extension
+                        val className = pkgname + '.' + files[i].substring(0, files[i].length - 6)
+
+                        //System.out.println("ClassDiscovery: className = " + className);
+
+                        try {
+                            classes.add(Class.forName(className))
+                        } catch (e: ClassNotFoundException) {
+                            throw RuntimeException("ClassNotFoundException loading " + className)
+                        }
+
+                    }
+                }
+            } else {
+                try {
+                    val jarPath = fullPath.replaceFirst("[.]jar[!].*".toRegex(), ".jar").replaceFirst("file:".toRegex(), "")
+                    val jarFile = JarFile(jarPath)
+                    val entries = jarFile.entries()
+                    while (entries.hasMoreElements()) {
+                        val entry = entries.nextElement()
+                        val entryName = entry.name
+                        if (entryName.startsWith(relPath) && entryName.length > relPath.length + "/".length) {
+
+                            //System.out.println("ClassDiscovery: JarEntry: " + entryName);
+                            val className = entryName.replace('/', '.').replace('\\', '.').replace(".class", "")
+
+                            //System.out.println("ClassDiscovery: className = " + className);
+                            try {
+                                classes.add(Class.forName(className))
+                            } catch (e: ClassNotFoundException) {
+                                throw RuntimeException("ClassNotFoundException loading " + className)
+                            }
+
+                        }
+                    }
+                } catch (e: IOException) {
+                    throw RuntimeException("$pkgname ($directory) does not appear to be a valid package", e)
+                }
+
+            }
+            return classes
         }
     }
 }

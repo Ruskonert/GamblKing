@@ -1,5 +1,6 @@
 package com.ruskonert.GameClient.event;
 
+import com.ruskonert.GameClient.connect.ClientBackground;
 import com.ruskonert.GameClient.program.ClientProgramManager;
 import com.ruskonert.GameClient.program.SignupApplication;
 import com.ruskonert.GameClient.program.component.ClientComponent;
@@ -17,7 +18,11 @@ public class ClientLayoutEvent implements LayoutListener
     ClientComponent clientComponent = ClientProgramManager.getClientComponent();
     clientComponent.RegisterButton.setOnMouseClicked(event -> Platform.runLater(() -> {
         SignupApplication application = null;
-            SignupApplication.start();
+            new SignupApplication().start(new Stage());
     }));
-}
+    clientComponent.LoginButton.setOnMouseClicked(event -> Platform.runLater(() -> {
+        ClientBackground background = new ClientBackground();
+        background.connect();
+    }));
+    }
 }
