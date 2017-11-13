@@ -6,6 +6,8 @@ public interface Player extends MessageDispatcher
 {
     InetAddress getInetAddress();
 
+    String getId();
+
     String getNickname();
 
     String getPassword();

@@ -1,9 +1,13 @@
-package com.ruskonert.GameClient.framework;
+package com.ruskonert.GameClient.program.component;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import com.ruskonert.GameClient.program.ClientProgramManager;
+import com.ruskonert.GameEngine.util.ReflectionUtil;
+import com.ruskonert.GameEngine.util.SystemUtil;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,6 +21,7 @@ import java.util.ResourceBundle;
  */
 public class SignupComponent implements Initializable
 {
+    //sign up components
     public JFXButton SignUpButton;
     public JFXButton CancelButton;
 
@@ -24,10 +29,18 @@ public class SignupComponent implements Initializable
     public JFXPasswordField TextPassword;
     public JFXTextField TextNickname;
     public JFXPasswordField TextPasswordCheck;
+    public Label ErrorMessage;
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-
+        try
+        {
+            ReflectionUtil.Companion.setStaticField(ClientProgramManager.class, "signupComponent", this);
+        }
+        catch (NoSuchFieldException | IllegalAccessException e)
+        {
+            SystemUtil.Companion.error(e);
+        }
     }
 }

@@ -1,9 +1,11 @@
 @file:JvmName("SystemUtil")
 package com.ruskonert.GameEngine.util
 
+import javafx.application.Platform
 import java.io.*
 import java.net.URL
 import javax.swing.JOptionPane
+import javafx.scene.control.Alert
 
 class SystemUtil
 {
@@ -64,6 +66,32 @@ class SystemUtil
             val out = ObjectOutputStream(bos)
             out.writeObject(obj)
             return bos.toByteArray()
+        }
+
+        fun getStyleURL(filename: String): URL
+        {
+            return SystemUtil.getStylePath("style/" + filename)
+        }
+
+        fun getLayout(clazz: Class<*>): URL
+        {
+            return getStyleURL(clazz.simpleName + ".fxml")
+        }
+
+        fun alert(title : String, headerText : String, content : String)
+        {
+            alert(title, headerText, content, Alert.AlertType.ERROR)
+        }
+
+        fun alert(title : String, headerText : String, content : String, type : Alert.AlertType)
+        {
+            Platform.runLater({
+                val alert = Alert(type)
+                alert.title = title
+                alert.headerText = headerText
+                alert.contentText = content
+                alert.showAndWait()
+            })
         }
     }
 }

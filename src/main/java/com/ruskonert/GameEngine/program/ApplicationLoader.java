@@ -1,5 +1,6 @@
 package com.ruskonert.GameEngine.program;
 
+import com.ruskonert.GameEngine.ProgramInitializable;
 import com.ruskonert.GameEngine.util.SystemUtil;
 import com.ruskonert.GameEngine.data.Pointer;
 import com.ruskonert.GameEngine.ProgramApplication;
@@ -19,7 +20,7 @@ import javafx.stage.StageStyle;
 
 import java.io.File;
 
-public final class ApplicationLoader extends Application
+public final class ApplicationLoader extends Application implements ProgramInitializable
 {
     private static Stage PreloadStage;
     public static Stage getPreloadStage() { return PreloadStage; }
@@ -31,7 +32,8 @@ public final class ApplicationLoader extends Application
         this.initialize(primaryStage);
     }
 
-    private boolean initialize(Object handleInstance)
+    @Override
+    public final boolean initialize(Object handleInstance)
     {
         Task<Void> task = new Task<Void>() {
             @Override
@@ -69,7 +71,7 @@ public final class ApplicationLoader extends Application
     {
         Stage stage = new Stage();
         PreloadStage = stage;
-        FXMLLoader loader = new FXMLLoader(ProgramManager.getLayout(this.getClass()));
+        FXMLLoader loader = new FXMLLoader(SystemUtil.Companion.getLayout(this.getClass()));
         Parent parent = loader.load();
         Scene scene = new Scene(parent, 600, 400);
 

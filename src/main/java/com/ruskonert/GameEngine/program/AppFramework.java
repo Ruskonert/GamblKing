@@ -28,7 +28,7 @@ import javafx.stage.Stage;
  * @see com.ruskonert.GameEngine.program.ApplicationLoader#initialize(Object)
  * @author Ruskonert (Junwon Kim)
  */
-public abstract class AppFramework
+public class AppFramework implements Register
 {
     private static Stage ApplictionStage;
     public static Stage getApplictionStage() { return ApplictionStage; }
@@ -48,7 +48,7 @@ public abstract class AppFramework
 
     private void createLayoutFramework(Stage primaryStage) throws Exception
     {
-        FXMLLoader root = new FXMLLoader(ProgramManager.getStyleURL("Application.fxml"));
+        FXMLLoader root = new FXMLLoader(SystemUtil.Companion.getStyleURL("Application.fxml"));
         primaryStage.setTitle(ProgramComponent.PROGRAM_NAME);
         primaryStage.setResizable(false);
         Parent parent = root.load();
@@ -120,7 +120,8 @@ public abstract class AppFramework
     /**
      * 레이아웃 이벤트를 등록합니다.
      */
-    protected void registerEvent(LayoutListener listener)
+    @Override
+    public void registerEvent(LayoutListener listener)
     {
         listener.register(this);
     }
@@ -128,7 +129,8 @@ public abstract class AppFramework
     /**
      * 서버 이벤트를 등록합니다.
      */
-    protected final void registerEvent(EventListener listener) { EventController.signatureListener(listener); }
+    @Override
+    public final void registerEvent(EventListener listener) { EventController.signatureListener(listener); }
 
     /**
      * 미리 만들어 둔 레이아웃 이벤트를 등록합니다.
@@ -143,8 +145,7 @@ public abstract class AppFramework
     /**
      * 미리 만들어 둔 서버 이벤트를 등록합니다.
      */
-    private void registerDefaultEvents()
-    {
+    private void registerDefaultEvents() {
         this.registerEvent(new PlayerConnectListener());
         // more events...
     }

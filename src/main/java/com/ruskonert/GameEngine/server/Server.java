@@ -14,7 +14,7 @@ public interface Server
 
     Collection<? extends OfflinePlayer> getOfflinePlayer();
 
-    Player getPlayer();
+    Player getPlayer(String name);
 
     Collection<? extends Player> getPlayers();
 

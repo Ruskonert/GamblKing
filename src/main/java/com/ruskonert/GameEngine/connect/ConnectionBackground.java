@@ -29,10 +29,10 @@ public class ConnectionBackground
                 Collections.synchronizedMap(clientMap);
                 try {
                     serverSocket = new ServerSocket(7443);
-                    GameServer.getServer().getConsoleSender().sendMessage("Server started by " + serverSocket.getInetAddress() + ":" +
+                    GameServer.getServer().getConsoleSender().log("Server started by " + serverSocket.getInetAddress().getHostAddress() + ":" +
                     serverSocket.getLocalPort());
                 socket = serverSocket.accept();
-                GameServer.getServer().getConsoleSender().sendMessage(socket.getInetAddress() + " join the game.");
+                GameServer.getServer().getConsoleSender().log(socket.getInetAddress().getHostAddress() + " join the game.");
 
                 PlayerConnectionReceiver receiver = new PlayerConnectionReceiver(socket);
                 receiver.asyncStart();
@@ -65,7 +65,8 @@ class PlayerConnectionReceiver
     private String jsonReceivedMessage;
     private Player player;
 
-    public PlayerConnectionReceiver(Socket socket) throws IOException {
+    public PlayerConnectionReceiver(Socket socket) throws IOException
+    {
         out = new DataOutputStream(socket.getOutputStream());
         in = new DataInputStream(socket.getInputStream());
         this.jsonReceivedMessage = in.readUTF();
@@ -78,14 +79,14 @@ class PlayerConnectionReceiver
 
     public void join(Player player, DataOutputStream out)
     {
-        GameServer.getServer().getConsoleSender().sendMessage(player.getNickname() + "님이 접속하셨습니다.");
+        GameServer.getServer().getConsoleSender().log(player.getNickname() + "님이 접속하셨습니다.");
         ConnectionBackground.clientMap.put(player, out);
     }
 
     public void leave(Player player)
     {
         ConnectionBackground.clientMap.remove(player);
-        GameServer.getServer().getConsoleSender().sendMessage(player.getNickname() + "님이 나갔습니다.");
+        GameServer.getServer().getConsoleSender().log(player.getNickname() + "님이 나갔습니다.");
 
     }
 
@@ -94,13 +95,16 @@ class PlayerConnectionReceiver
         protected Void call() throws Exception {
             try
             {
-                jsonReceivedMessage = in.readUTF();
-                GameServer.getServer().getConsoleSender().sendMessage("Data received: " + jsonReceivedMessage.length());
-                //TODO you want to
+                while(in != null) {
+                    jsonReceivedMessage = in.readUTF();
+                    GameServer.getServer().getConsoleSender().sendMessage("Data received: " + jsonReceivedMessage.length());
+                    //TODO you want to
+                }
             }
             catch(IOException e)
             {
                 leave(player);
+                GameServer.getServer().getConsoleSender().log("leaved the game.");
             }
             return null;
         }

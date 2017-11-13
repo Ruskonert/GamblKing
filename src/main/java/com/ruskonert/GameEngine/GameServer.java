@@ -28,7 +28,7 @@ public final class GameServer
 
     public static Collection<? extends Player> getPlayers() { return server.getPlayers(); }
 
-    public static Player getPlayer(String name) { return server.getPlayer(); }
+    public static Player getPlayer(String id) { return server.getPlayer(id); }
 
     public static Collection<? extends OfflinePlayer> getOfflinePlayer()
     {

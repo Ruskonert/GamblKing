@@ -67,7 +67,7 @@ public class GameServerFramework implements Server
     }
 
     @Override
-    public Player getPlayer()
+    public Player getPlayer(String id)
     {
         return null;
     }
