@@ -1,14 +1,14 @@
 package com.ruskonert.GameClient.event;
 
-import com.ruskonert.GameClient.connect.ClientBackground;
 import com.ruskonert.GameClient.program.ClientProgramManager;
 import com.ruskonert.GameClient.program.SignupApplication;
 import com.ruskonert.GameClient.program.component.ClientComponent;
+import com.ruskonert.GameEngine.GameServer;
+import com.ruskonert.GameEngine.entity.Player;
 import com.ruskonert.GameEngine.event.LayoutListener;
+import com.ruskonert.GameEngine.event.connect.PlayerLoginAttemptEvent;
 import javafx.application.Platform;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class ClientLayoutEvent implements LayoutListener
 {
@@ -20,9 +20,11 @@ public class ClientLayoutEvent implements LayoutListener
         SignupApplication application = null;
             new SignupApplication().start(new Stage());
     }));
-    clientComponent.LoginButton.setOnMouseClicked(event -> Platform.runLater(() -> {
-        ClientBackground background = new ClientBackground();
-        background.connect();
+    clientComponent.LoginButton.setOnMouseClicked(event -> Platform.runLater(() ->
+    {
+        Player player = GameServer.getPlayer(clientComponent.InputID.getText());
+        PlayerLoginAttemptEvent playerEvent = new PlayerLoginAttemptEvent(player);
+        playerEvent.start();
     }));
     }
 }

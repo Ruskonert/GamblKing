@@ -114,7 +114,7 @@ public final class ApplicationLoader extends Application implements ProgramIniti
                             Platform.runLater(() -> ProgramManager.getPreloadComponent()
                                     .getLoadingProgressBar().setProgress((double) process.ptr / totalFileCount));
                             if (process.ptr == totalFileCount) break;
-                            Thread.sleep(5L);
+                            Thread.sleep(3L);
                         }
                         return null;
                     }

@@ -14,17 +14,16 @@ public class RegisterConnection extends PacketConnection
     private String password;
     public String getPassword() { return password; }
 
-    public RegisterConnection(String id)
+    public RegisterConnection(String id, String nickname, String password)
     {
         super(ServerProperty.CHECK_REGISTER_CONNECTION);
         this.id = id;
+        this.nickname = nickname;
+        this.password = password;
     }
 
-    public void send() { this.send(ClientLoader.getBackgroundConnection(), this); }
-
-    @Override
-    public void send(ClientBackground clientSocket, Object handleInstance)
+    public void send()
     {
-        super.send(clientSocket, handleInstance);
+        this.send(ClientLoader.getBackgroundConnection(), this);
     }
 }

@@ -31,10 +31,7 @@ public final class GameServer
 
     public static Player getPlayer(String id) { return server.getPlayer(id); }
 
-    public static Collection<? extends OfflinePlayer> getOfflinePlayer()
-    {
-        return server.getOfflinePlayer();
-    }
+    public static Collection<? extends OfflinePlayer> getOfflinePlayer() { return server.getOfflinePlayer(); }
 
     public static Channel getChannel(String channelName) { return  server.getChannel(channelName); }
 

@@ -9,4 +9,6 @@ public final class ServerProperty
     public static final int    SERVER_PORT    = 7743;
 
     public static final int CHECK_REGISTER_CONNECTION = 440;
+
+    public static final int CLIENT_SERVER_REQUEST = 614;
 }

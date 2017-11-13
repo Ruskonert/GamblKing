@@ -63,7 +63,7 @@ public class ConsoleLayoutEvent implements LayoutListener
         // clicked exit button
         component.getMainExitButton().setOnMouseClicked( event -> {
             AppFramework.getApplictionStage().setOnCloseRequest(e -> Platform.exit());
-            ReflectionUtil.Companion.invokeMethod(framework, "onDisable", (Object)null);
+            ReflectionUtil.Companion.invokeMethod(framework, "onDisable");
         });
 
         // using console send message field and press enter

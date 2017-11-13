@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 public class GameServerFramework implements Server
@@ -48,6 +49,8 @@ public class GameServerFramework implements Server
             SystemUtil.Companion.error(e);
         }
     }
+
+    private List<Player> onlinePlayer;
 
     private Map<String, Channel> channelMap;
 

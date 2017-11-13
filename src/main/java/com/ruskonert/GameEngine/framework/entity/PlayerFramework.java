@@ -44,7 +44,7 @@ public class PlayerFramework implements Player, MessageDispatcher
 
     public PlayerFramework() { }
 
-    private static Player register(String id, String nickname, String password)
+    public static Player register(String id, String nickname, String password)
     {
         PlayerFramework framework = new PlayerFramework();
         framework.setId(id);

@@ -10,8 +10,6 @@ import com.ruskonert.GameEngine.program.Register;
 import com.ruskonert.GameEngine.util.SystemUtil;
 
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -22,6 +20,12 @@ public class ClientLoader extends Application implements ProgramInitializable, R
     public static ClientBackground getBackgroundConnection() { return backgroundConnection; }
 
     public static void main(String[] args) { launch(args);}
+
+    public static void setBackgroundConnection(ClientBackground backgroundConnection)
+    {
+        ClientLoader.backgroundConnection = backgroundConnection;
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception
     {
@@ -30,16 +34,6 @@ public class ClientLoader extends Application implements ProgramInitializable, R
         primaryStage.setScene(new Scene(loader.load(), 600,400));
         this.registerEvent(new ClientLayoutEvent());
         primaryStage.show();
-        Task<Void> task = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                backgroundConnection = new ClientBackground();
-                backgroundConnection.connect();
-                return null;
-            }
-        };
-        Thread thread = new Thread(task);
-        thread.start();
     }
 
     @Override

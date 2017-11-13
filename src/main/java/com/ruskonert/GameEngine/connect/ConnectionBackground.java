@@ -1,21 +1,11 @@
 package com.ruskonert.GameEngine.connect;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.ruskonert.GameClient.connect.PacketConnection;
-import com.ruskonert.GameClient.connect.RegisterConnection;
 import com.ruskonert.GameEngine.GameServer;
-import com.ruskonert.GameEngine.entity.Player;
-import com.ruskonert.GameEngine.framework.entity.PlayerFramework;
 import com.ruskonert.GameEngine.property.ServerProperty;
-import com.ruskonert.GameEngine.util.SystemUtil;
 import javafx.concurrent.Task;
 
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -39,14 +29,17 @@ public class ConnectionBackground
                 Collections.synchronizedMap(clientMap);
                 try
                 {
-                    serverSocket = new ServerSocket(4444);
+                    serverSocket = new ServerSocket(ServerProperty.SERVER_PORT);
                     GameServer.getServer().getConsoleSender().log("Server started by " + serverSocket.getInetAddress().getHostAddress() + ":" +
-                    serverSocket.getLocalPort());
-                    socket = serverSocket.accept();
-                    GameServer.getServer().getConsoleSender().log(socket.getInetAddress().getHostAddress() + " join the game.");
+                            serverSocket.getLocalPort());
+                    while(true)
+                    {
+                        socket = serverSocket.accept();
+                        GameServer.getServer().getConsoleSender().log(socket.getInetAddress().getHostAddress() + " 서버에 연결 요청함");
 
-                    PlayerConnectionReceiver receiver = new PlayerConnectionReceiver(socket);
-                    receiver.asyncStart();
+                        PlayerConnectionReceiver receiver = new PlayerConnectionReceiver(socket);
+                        receiver.asyncStart();
+                    }
                 }
                 catch (IOException e)
                 {
@@ -61,6 +54,7 @@ public class ConnectionBackground
 
     public ConnectionBackground()
     {
+
     }
 
     public void start() throws IOException
@@ -69,86 +63,4 @@ public class ConnectionBackground
     }
 
 
-}
-
-class PlayerConnectionReceiver
-{
-    private DataInputStream in;
-    private DataOutputStream out;
-    private String jsonReceivedMessage;
-
-    public PlayerConnectionReceiver(Socket socket) throws IOException
-    {
-        out = new DataOutputStream(socket.getOutputStream());
-        in = new DataInputStream(socket.getInputStream());
-
-        this.join(socket.getInetAddress(), out);
-    }
-
-    public void join(InetAddress address, DataOutputStream out)
-    {
-        GameServer.getServer().getConsoleSender().log(address.getHostAddress() + "이(가) 접속하셨습니다.");
-        ConnectionBackground.clientMap.put(address, out);
-    }
-
-    public void leave(Player player)
-    {
-        ConnectionBackground.clientMap.remove(player);
-        GameServer.getServer().getConsoleSender().log(player.getNickname() + "님이 나갔습니다.");
-
-    }
-
-    private Task<Void> taskBackground = new Task<Void>() {
-        @Override
-        protected Void call() throws Exception {
-            try
-            {
-                while(in != null)
-                {
-                    jsonReceivedMessage = in.readUTF();
-                    Gson gson = new Gson();
-                    try
-                    {
-                        PacketConnection connection = gson.fromJson(jsonReceivedMessage, RegisterConnection.class);
-
-                        if(connection.getStatusNumber() == ServerProperty.CHECK_REGISTER_CONNECTION)
-                        {
-                            RegisterConnection registerConnection = (RegisterConnection)connection;
-                            String id = registerConnection.getId();
-                            GameServer.getServer().getConsoleSender().sendMessage("Player requested: CHECK_REGISTER_CONNECTION=[" + id + "]");
-                            if(new File("data/" + id + ".json").exists())
-                            {
-                                out.writeUTF("해당 아이디는 이미 가입되어 있습니다.");
-                            }
-                            else
-                            {
-                                Method method = PlayerFramework.class.getDeclaredMethod("register", String.class, String.class, String.class);
-                                method.setAccessible(true);
-
-                                Player newPlayer = (Player) method.invoke(PlayerFramework.class.getConstructors()[0].newInstance(),
-                                        registerConnection.getId(), registerConnection.getNickname(),
-                                        registerConnection.getPassword());
-                            }
-                        }
-                    }
-                    catch(JsonSyntaxException e)
-                    {
-                        SystemUtil.Companion.alert("syntax error", "오류", e.getMessage());
-                    }
-                }
-            }
-            catch(IOException e)
-            {
-                GameServer.getServer().getConsoleSender().log("leaved the game.");
-            }
-            return null;
-        }
-    };
-
-    public void asyncStart()
-    {
-        Task<Void> task = this.taskBackground;
-        Thread thread = new Thread(task);
-        thread.start();
-    }
 }

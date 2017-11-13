@@ -44,7 +44,6 @@ public class SignupApplication
         stage.close();
     }
 
-
     public void registerEvent(LayoutListener listener)
     {
         listener.register(this);

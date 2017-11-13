@@ -1,12 +1,14 @@
 package com.ruskonert.GameClient.connect;
 
-import com.ruskonert.GameEngine.entity.Player;
+import com.ruskonert.GameClient.ClientLoader;
 import com.ruskonert.GameEngine.property.ServerProperty;
+import javafx.concurrent.Task;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class ClientBackground
 {
@@ -16,25 +18,60 @@ public class ClientBackground
 
     private String receivedMessage = null;
 
-    public void connect()
+    public void initialize()
     {
         try
         {
-            socket = new Socket(ServerProperty.SERVER_ADDRESS, 4444);
-            System.out.println("Server connected");
+            ClientLoader.setBackgroundConnection(this);
+
+            socket = new Socket(ServerProperty.SERVER_ADDRESS, ServerProperty.SERVER_PORT);
+            System.out.println("서버에 연결됨, 주소 호출 대상: " +  socket.getInetAddress().getHostAddress() + ":" + socket.getPort());
 
             out = new DataOutputStream(socket.getOutputStream());
             in = new DataInputStream(socket.getInputStream());
-            System.out.println("Server message received: " + socket.getInetAddress().getHostAddress());
-            while (in != null)
-            {
-                receivedMessage = in.readUTF();
-                //TODO
-            }
         }
         catch(IOException e)
         {
             e.printStackTrace();
+            System.out.println("서버 연결 실패");
+            ClientLoader.setBackgroundConnection(null);
+        }
+    }
+
+    public static void checkClientConnection()
+    {
+        if(ClientLoader.getBackgroundConnection() == null)
+        {
+            ClientBackground background = new ClientBackground();
+            background.initialize();
+
+            Task<Void> task = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    background.readData();
+                    return null;
+                }
+            };
+
+            Thread thread = new Thread(task);
+            thread.start();
+        }
+    }
+
+    public void readData()
+    {
+        while (in != null)
+        {
+            try
+            {
+                receivedMessage = in.readUTF();
+            }
+            catch (IOException e)
+            {
+                System.out.println("오류: 서버에서 연결을 끊음");
+                return;
+            }
+            System.out.println("서버로부터 받은 메세지: " + receivedMessage);
         }
     }
 
@@ -44,7 +81,12 @@ public class ClientBackground
         {
             out.writeUTF(message);
         }
-        catch(IOException e)
+
+        catch(SocketException e)
+        {
+            ClientBackground.checkClientConnection();
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
         }

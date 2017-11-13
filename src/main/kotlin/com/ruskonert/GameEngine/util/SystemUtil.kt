@@ -15,12 +15,12 @@ class SystemUtil
         {
             val stes = e.stackTrace
             val builder = StringBuilder()
-            builder.append("¿¹¿ÜÃ³¸®°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù. ÀÚ¼¼ÇÑ ³»¿ëÀº ¾Æ·¡ ·Î±×¸¦ Âü°íÇÏ½Ê½Ã¿À.\n")
-            builder.append("±Ùµ¥ ¿Ö ¿À·ù°¡ ¹ß»ıÇß´ÂÁö´Â ¸ğ¸£°Ú½À´Ï´Ù..\n\n")
+            builder.append("ì˜ˆì™¸ì²˜ë¦¬ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.\n")
+            builder.append("ìì„¸í•œ ì˜¤ë¥˜ ë‚´ìš©ì€ ì•„ë˜ ë‚´ìš©ì„ ì°¸ê³ í•˜ì‹­ì‹œì˜¤.\n\n")
             builder.append("Caused by: ")
             builder.append(e.toString() + "\n")
             for (ste in stes) builder.append(ste).append("\n")
-            JOptionPane.showMessageDialog(null, builder.toString(), "¿À·ù", JOptionPane.ERROR_MESSAGE)
+            JOptionPane.showMessageDialog(null, builder.toString(), "ì˜ˆì™¸ì²˜ë¦¬ ë°œìƒ", JOptionPane.ERROR_MESSAGE)
             System.exit(-1)
         }
 
