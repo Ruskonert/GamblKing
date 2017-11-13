@@ -6,13 +6,16 @@ import com.ruskonert.GameClient.connect.PacketConnection;
 import com.ruskonert.GameClient.connect.RegisterConnection;
 import com.ruskonert.GameEngine.GameServer;
 import com.ruskonert.GameEngine.entity.Player;
+import com.ruskonert.GameEngine.framework.entity.PlayerFramework;
 import com.ruskonert.GameEngine.property.ServerProperty;
 import com.ruskonert.GameEngine.util.SystemUtil;
 import javafx.concurrent.Task;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -103,19 +106,29 @@ class PlayerConnectionReceiver
                 while(in != null)
                 {
                     jsonReceivedMessage = in.readUTF();
-                    System.out.println(jsonReceivedMessage + " Read in.");
                     Gson gson = new Gson();
                     try
                     {
                         PacketConnection connection = gson.fromJson(jsonReceivedMessage, RegisterConnection.class);
-                        System.out.println(jsonReceivedMessage + "read reaer");
 
                         if(connection.getStatusNumber() == ServerProperty.CHECK_REGISTER_CONNECTION)
                         {
                             RegisterConnection registerConnection = (RegisterConnection)connection;
                             String id = registerConnection.getId();
                             GameServer.getServer().getConsoleSender().sendMessage("Player requested: CHECK_REGISTER_CONNECTION=[" + id + "]");
+                            if(new File("data/" + id + ".json").exists())
+                            {
+                                out.writeUTF("해당 아이디는 이미 가입되어 있습니다.");
+                            }
+                            else
+                            {
+                                Method method = PlayerFramework.class.getDeclaredMethod("register", String.class, String.class, String.class);
+                                method.setAccessible(true);
 
+                                Player newPlayer = (Player) method.invoke(PlayerFramework.class.getConstructors()[0].newInstance(),
+                                        registerConnection.getId(), registerConnection.getNickname(),
+                                        registerConnection.getPassword());
+                            }
                         }
                     }
                     catch(JsonSyntaxException e)

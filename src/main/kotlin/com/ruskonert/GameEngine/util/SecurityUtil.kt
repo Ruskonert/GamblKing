@@ -1,18 +1,13 @@
 package com.ruskonert.GameEngine.util
 
-import java.security.NoSuchAlgorithmException
-import java.security.MessageDigest
-import kotlin.experimental.and
-import java.io.IOException
-import com.sun.tools.internal.ws.wsdl.parser.Util.nextElement
-import java.util.jar.JarEntry
-import java.util.Enumeration
-import java.util.jar.JarFile
-import java.net.URISyntaxException
-import sun.net.www.ParseUtil.toURI
 import java.io.File
-import java.util.ArrayList
-
+import java.io.IOException
+import java.net.URISyntaxException
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
+import java.util.*
+import java.util.jar.JarFile
+import kotlin.experimental.and
 
 
 class SecurityUtil

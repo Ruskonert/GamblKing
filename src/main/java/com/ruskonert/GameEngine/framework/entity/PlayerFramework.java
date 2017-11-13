@@ -2,10 +2,15 @@ package com.ruskonert.GameEngine.framework.entity;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.ruskonert.GameEngine.GameServer;
 import com.ruskonert.GameEngine.entity.MessageDispatcher;
 import com.ruskonert.GameEngine.entity.Player;
 import com.ruskonert.GameEngine.util.SecurityUtil;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.InetAddress;
 
 public class PlayerFramework implements Player, MessageDispatcher
@@ -37,9 +42,9 @@ public class PlayerFramework implements Player, MessageDispatcher
 
     }
 
-    private PlayerFramework() { }
+    public PlayerFramework() { }
 
-    private void register(String id, String nickname, String password)
+    private static Player register(String id, String nickname, String password)
     {
         PlayerFramework framework = new PlayerFramework();
         framework.setId(id);
@@ -47,11 +52,26 @@ public class PlayerFramework implements Player, MessageDispatcher
         framework.setPassword(password);
 
         Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
-        gson.toJson(this);
-    }
+        String jsonMessage = gson.toJson(framework);
+        File dataFolder = GameServer.getServer().getDataFolder();
+        File playerFile = new File(dataFolder, "/player/" + framework.getNickname() + ".json");
+        try
+        {
+            if(playerFile.createNewFile())
+            {
+                GameServer.getConsoleSender().log(framework.getNickname() + " was created.");
+            }
+            BufferedWriter writer = new BufferedWriter(new FileWriter(playerFile));
 
-    private static void finish(Player player)
-    {
+            writer.append(jsonMessage);
+            writer.flush();
+            writer.close();
 
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return framework;
     }
 }

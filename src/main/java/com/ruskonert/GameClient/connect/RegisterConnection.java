@@ -4,9 +4,15 @@ import com.ruskonert.GameClient.ClientLoader;
 import com.ruskonert.GameEngine.property.ServerProperty;
 
 public class RegisterConnection extends PacketConnection
-{
-    private String id;
+    {
+        private String id;
     public String getId() { return id; }
+
+    private String nickname;
+    public String getNickname() { return nickname; }
+
+    private String password;
+    public String getPassword() { return password; }
 
     public RegisterConnection(String id)
     {
