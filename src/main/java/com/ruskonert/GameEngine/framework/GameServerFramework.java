@@ -10,6 +10,7 @@ import com.ruskonert.GameEngine.server.Server;
 import com.ruskonert.GameEngine.util.ReflectionUtil;
 import com.ruskonert.GameEngine.util.SystemUtil;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Map;
@@ -29,7 +30,12 @@ public class GameServerFramework implements Server
         ConsoleSender consoleSenderFramework = new ConsoleSenderFramework(this);
         this.consoleSender = consoleSenderFramework;
 
-        BindConnection connection = new BindConnection();
+        BindConnection connection = null;
+        try {
+            connection = new BindConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.connectionServer = connection;
 
         try

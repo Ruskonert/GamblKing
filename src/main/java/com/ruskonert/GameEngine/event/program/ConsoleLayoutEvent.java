@@ -8,11 +8,12 @@ import com.ruskonert.GameEngine.program.AppFramework;
 import com.ruskonert.GameEngine.program.ProgramManager;
 import com.ruskonert.GameEngine.program.component.ProgramComponent;
 import com.ruskonert.GameEngine.server.ConsoleSender;
-import com.ruskonert.GameEngine.server.Server;
 import com.ruskonert.GameEngine.util.ReflectionUtil;
 
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
+
+import java.io.IOException;
 
 public class ConsoleLayoutEvent implements LayoutListener
 {
@@ -30,7 +31,14 @@ public class ConsoleLayoutEvent implements LayoutListener
         component.getMainStartButton().setOnMouseClicked(event -> {
             component.getMainStartButton().setText("Running");
             component.getMainStartButton().setDisable(true);
-            GameServer.getServer().getBindConnection().start();
+            try
+            {
+                GameServer.getServer().getBindConnection().getBackgroundTask().start();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
         });
 
         // Console send button clicked on mouse
@@ -55,7 +63,7 @@ public class ConsoleLayoutEvent implements LayoutListener
         // clicked exit button
         component.getMainExitButton().setOnMouseClicked( event -> {
             AppFramework.getApplictionStage().setOnCloseRequest(e -> Platform.exit());
-            ReflectionUtil.Companion.invokeMethod(framework, "onDisableInner");
+            ReflectionUtil.Companion.invokeMethod(framework, "onDisable", (Object)null);
         });
 
         // using console send message field and press enter
