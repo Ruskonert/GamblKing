@@ -78,7 +78,7 @@
           <outputDirectory>${project.build.directory}</outputDirectory>
           <archive>
             <manifest>
-              <mainClass>com.ruskonert.GameEngine.program.ApplicationLoader</mainClass>
+              <mainClass>com.ruskonert.GamblKing.engine.program.ApplicationLoader</mainClass>
             </manifest>
           </archive>
         </configuration>

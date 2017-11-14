@@ -14,7 +14,7 @@
 
 <AnchorPane fx:id="MainScreen" maxHeight="-Infinity" maxWidth="-Infinity"
             minHeight="-Infinity" minWidth="-Infinity" prefHeight="536.0" prefWidth="804.0"
-            xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ruskonert.GameEngine.program.component.ProgramComponent">
+            xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ruskonert.GamblKing.engine.program.component.ProgramComponent">
    <AnchorPane focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="80.0" prefWidth="804.0" style="-fx-background-color: #155d92;">
       <ImageView fx:id="ConsoleMenuButton" fitHeight="56.0" fitWidth="56.0" layoutX="14.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
          <Image url="@icons8-console.png" />
