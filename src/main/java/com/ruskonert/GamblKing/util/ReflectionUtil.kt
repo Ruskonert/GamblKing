@@ -1,5 +1,5 @@
 @file:JvmName("ReflectionUtil")
-package com.ruskonert.Gamblking.util
+package com.ruskonert.GamblKing.util
 
 import java.lang.reflect.Method
 

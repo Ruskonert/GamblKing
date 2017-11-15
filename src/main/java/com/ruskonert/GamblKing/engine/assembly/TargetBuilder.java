@@ -1,6 +1,6 @@
 package com.ruskonert.GamblKing.engine.assembly;
 
-import com.ruskonert.Gamblking.util.SystemUtil;
+import com.ruskonert.GamblKing.util.SystemUtil;
 import com.ruskonert.GamblKing.engine.program.ProgramManager;
 
 import java.lang.annotation.Annotation;

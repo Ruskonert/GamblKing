@@ -1,6 +1,6 @@
 package com.ruskonert.GamblKing.client.connect.packet;
 
-import com.ruskonert.GamblKing.engine.property.ServerProperty;
+import com.ruskonert.GamblKing.property.ServerProperty;
 
 public class RegisterConnectionPacket extends ClientPacket
 {

@@ -1,7 +1,7 @@
 package com.ruskonert.GamblKing.engine.connect;
 
 import com.ruskonert.GamblKing.engine.GameServer;
-import com.ruskonert.GamblKing.engine.property.ServerProperty;
+import com.ruskonert.GamblKing.property.ServerProperty;
 import javafx.concurrent.Task;
 
 import java.io.DataOutputStream;

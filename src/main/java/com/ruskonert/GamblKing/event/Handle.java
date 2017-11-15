@@ -1,4 +1,4 @@
-package com.ruskonert.GamblKing.engine.event;
+package com.ruskonert.GamblKing.event;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

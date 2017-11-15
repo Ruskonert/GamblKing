@@ -1,8 +1,8 @@
-package com.ruskonert.GamblKing.engine.program;
+package com.ruskonert.GamblKing.program;
 
 import com.ruskonert.GamblKing.engine.event.EventController;
-import com.ruskonert.GamblKing.engine.event.EventListener;
-import com.ruskonert.GamblKing.engine.event.LayoutListener;
+import com.ruskonert.GamblKing.event.EventListener;
+import com.ruskonert.GamblKing.event.LayoutListener;
 import javafx.stage.Stage;
 
 public abstract class StageBuilder

@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TargetReference
 {
-    String target() default "com.ruskonert.GameEngine.program.component";
+    String target() default "com.ruskonert.GamblKing.engine.program.component";
     String value() default "";
 }

@@ -1,7 +1,7 @@
 package com.ruskonert.GamblKing.engine.event.program;
 
 
-import com.ruskonert.GamblKing.engine.event.LayoutListener;
+import com.ruskonert.GamblKing.event.LayoutListener;
 
 public class SettingLayoutEvent implements LayoutListener
 {

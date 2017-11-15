@@ -1,19 +1,17 @@
 package com.ruskonert.GamblKing.client.connect;
 
 import com.google.gson.*;
+import com.ruskonert.GamblKing.property.ServerProperty;
+import com.ruskonert.GamblKing.util.SystemUtil;
 import com.ruskonert.GamblKing.client.ClientLoader;
 import com.ruskonert.GamblKing.client.program.SignupApplication;
 import com.ruskonert.GamblKing.client.program.UpdateApplication;
-import com.ruskonert.GamblKing.engine.connect.server.Update;
-import com.ruskonert.GamblKing.engine.property.ServerProperty;
-import com.ruskonert.Gamblking.util.SystemUtil;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 
@@ -99,8 +97,7 @@ public class ClientConnectionReceiver
 
     public void readData()
     {
-        while (in != null)
-        {
+        while (in != null) {
             try
             {
                 receivedMessage = in.readUTF();
@@ -116,80 +113,18 @@ public class ClientConnectionReceiver
             JsonObject requestedJsonObject = new Gson().fromJson(receivedMessage, JsonObject.class);
             int status = 0;
 
-            try { status = requestedJsonObject.get("status").getAsInt(); } catch(NullPointerException e) { }
+            try
+            {
+                status = requestedJsonObject.get("status").getAsInt();
+            }
+            catch (NullPointerException e)
+            {
+            }
 
             // Processing
             clientRegisterLoginSocket(status, requestedJsonObject);
-
-
-            // Requesting send the updated file
-            /*
-            if(status == 0)
-            {
-                Gson gson = new GsonBuilder().registerTypeAdapter(Map.class,
-                        (JsonDeserializer<Map<String, File>>) (json, typeOfT, context) -> {
-                    Map<String, File> m = new HashMap<>();
-                    for(Map.Entry<String, JsonElement> e : json.getAsJsonObject().entrySet())
-                    {
-                        m.put(e.getKey(), new File(e.getValue().getAsJsonObject().get("path").toString().replaceAll("\"", "")));
-                    }
-                    return m;
-                }).create();
-                Map<String, File> updateFile = gson.fromJson(requestedJsonObject.toString(), Map.class);
-                for(String k : UpdatePacket.getUpdateFiles().keySet())
-                {
-                    updateFile.remove(k);
-                }
-                JsonObject jo = new JsonObject();
-                jo.addProperty("statusNumber", ServerProperty.SEND_UPDATE_FILE_REQUEST);
-                StringBuilder builder = new StringBuilder();
-                for(String s : updateFile.keySet())
-                {
-                    builder.append(s + ",");
-                }
-                jo.addProperty("data", builder.toString());
-                this.send(jo.toString());
-            }
-
-            if(status == ServerProperty.SIGNAL_FILE_UPLOADED)
-            {
-                JsonObject jo = new Gson().fromJson(receivedMessage, JsonObject.class);
-                Task<Void> task = new Task<Void>() {
-                    @Override
-                    protected Void call() throws Exception {
-                        fileReceived(new Gson().fromJson(jo.get("data").toString(), Set.class));
-                        return null;
-                    }
-                };
-                Thread thread = new Thread(task);
-                thread.start();
-            }
-            */
         }
     }
-
-    private void fileReceived(String[] key)
-    {
-        Socket s = new Socket();
-        try {
-            s.connect(new InetSocketAddress(ServerProperty.SERVER_ADDRESS, 22644));
-            InputStream in = s.getInputStream();
-            FileOutputStream out = null;
-            for(String hash : key)
-            {
-                out = new FileOutputStream(Update.getUpdateFiles().get(hash));
-                byte[] buffer = new byte[8192];
-                int bytesRead = 0;
-                while((bytesRead = in.read(buffer)) > 0)
-                {
-                    out.write(buffer, 0, bytesRead);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     public void send(String message)
     {

@@ -1,7 +1,7 @@
 package com.ruskonert.GamblKing.engine.program.component;
 
 import com.ruskonert.GamblKing.engine.program.ProgramManager;
-import com.ruskonert.Gamblking.util.ReflectionUtil;
+import com.ruskonert.GamblKing.util.ReflectionUtil;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXToggleButton;

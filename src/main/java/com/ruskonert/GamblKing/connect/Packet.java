@@ -1,8 +1,8 @@
-package com.ruskonert.GamblKing.engine.connect;
+package com.ruskonert.GamblKing.connect;
 
 import com.google.gson.Gson;
 import com.ruskonert.GamblKing.client.connect.ClientConnectionReceiver;
-import com.ruskonert.Gamblking.util.SystemUtil;
+import com.ruskonert.GamblKing.util.SystemUtil;
 import javafx.scene.control.Alert;
 
 public abstract class Packet

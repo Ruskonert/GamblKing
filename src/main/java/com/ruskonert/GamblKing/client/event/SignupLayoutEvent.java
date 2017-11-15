@@ -5,7 +5,8 @@ import com.ruskonert.GamblKing.client.connect.packet.RegisterConnectionPacket;
 import com.ruskonert.GamblKing.client.program.ClientProgramManager;
 import com.ruskonert.GamblKing.client.program.SignupApplication;
 import com.ruskonert.GamblKing.client.program.component.SignupComponent;
-import com.ruskonert.GamblKing.engine.event.LayoutListener;
+import com.ruskonert.GamblKing.event.LayoutListener;
+
 import javafx.application.Platform;
 
 public class SignupLayoutEvent implements LayoutListener

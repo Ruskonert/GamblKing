@@ -1,4 +1,4 @@
-package com.ruskonert.GamblKing.engine;
+package com.ruskonert.GamblKing;
 
 public interface ProgramInitializable
 {

@@ -1,4 +1,4 @@
-package com.ruskonert.GamblKing.engine.event;
+package com.ruskonert.GamblKing.event;
 
 public interface LayoutListener
 {

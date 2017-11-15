@@ -1,8 +1,9 @@
 package com.ruskonert.GamblKing.client.program.component;
 
 import com.ruskonert.GamblKing.client.program.ClientProgramManager;
-import com.ruskonert.Gamblking.util.ReflectionUtil;
-import com.ruskonert.Gamblking.util.SystemUtil;
+import com.ruskonert.GamblKing.util.ReflectionUtil;
+import com.ruskonert.GamblKing.util.SystemUtil;
+
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;

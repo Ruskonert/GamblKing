@@ -1,8 +1,9 @@
 package com.ruskonert.GamblKing.engine.program;
 
-import com.ruskonert.GamblKing.engine.ProgramInitializable;
-import com.ruskonert.GamblKing.engine.connect.server.Update;
-import com.ruskonert.Gamblking.util.SystemUtil;
+import com.ruskonert.GamblKing.ProgramInitializable;
+import com.ruskonert.GamblKing.util.SystemUtil;
+
+import com.ruskonert.GamblKing.engine.connect.Update;
 import com.ruskonert.GamblKing.engine.data.Pointer;
 import com.ruskonert.GamblKing.engine.ProgramApplication;
 import com.ruskonert.GamblKing.engine.program.component.ProgramComponent;

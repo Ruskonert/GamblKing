@@ -1,8 +1,8 @@
-package com.ruskonert.GamblKing.engine.connect.server;
+package com.ruskonert.GamblKing.engine.connect.connect;
 
 import com.ruskonert.GamblKing.engine.server.Server;
 
-public class GameConnection
+public class GameConnectionPacket
 {
     public static Server getServerConnection()
     {

@@ -1,5 +1,5 @@
 @file:JvmName("SystemUtil")
-package com.ruskonert.Gamblking.util
+package com.ruskonert.GamblKing.util
 
 import javafx.application.Platform
 import java.io.*

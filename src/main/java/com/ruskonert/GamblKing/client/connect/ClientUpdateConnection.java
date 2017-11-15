@@ -1,8 +1,8 @@
 package com.ruskonert.GamblKing.client.connect;
 
 import com.ruskonert.GamblKing.client.connect.packet.ClientPacket;
-import com.ruskonert.GamblKing.engine.property.ServerProperty;
-import com.ruskonert.Gamblking.util.SecurityUtil;
+import com.ruskonert.GamblKing.property.ServerProperty;
+import com.ruskonert.GamblKing.util.SecurityUtil;
 
 import java.io.File;
 import java.util.HashMap;

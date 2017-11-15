@@ -1,4 +1,5 @@
-package com.ruskonert.Gamblking.util
+@file:JvmName("SecurityUtil")
+package com.ruskonert.GamblKing.util
 
 import java.io.File
 import java.io.FileNotFoundException

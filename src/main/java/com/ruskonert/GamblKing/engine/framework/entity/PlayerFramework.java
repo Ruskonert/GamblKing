@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.ruskonert.GamblKing.engine.GameServer;
 import com.ruskonert.GamblKing.engine.entity.MessageDispatcher;
 import com.ruskonert.GamblKing.engine.entity.Player;
-import com.ruskonert.Gamblking.util.SecurityUtil;
+import com.ruskonert.GamblKing.util.SecurityUtil;
 
 import java.io.BufferedWriter;
 import java.io.File;

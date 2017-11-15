@@ -1,6 +1,9 @@
 package com.ruskonert.GamblKing.engine.event;
 
 import com.ruskonert.GamblKing.engine.execption.EventExecption;
+import com.ruskonert.GamblKing.event.EventHandler;
+import com.ruskonert.GamblKing.event.EventListener;
+import com.ruskonert.GamblKing.event.Handle;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -10,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public final class EventController
+public final class EventController implements EventHandler
 {
     private static Map<Class<Event>, List<EventEntry<EventListener, Method>>> EVENT_HANDLER_COLLECTION = new ConcurrentHashMap<>();
     public static void signatureListener(EventListener listener)

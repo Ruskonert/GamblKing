@@ -1,7 +1,7 @@
 package com.ruskonert.GamblKing.client.connect.packet;
 
 import com.ruskonert.GamblKing.client.ClientLoader;
-import com.ruskonert.GamblKing.engine.connect.Packet;
+import com.ruskonert.GamblKing.connect.Packet;
 
 public abstract class ClientPacket extends Packet
 {

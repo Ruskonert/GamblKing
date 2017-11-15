@@ -7,8 +7,8 @@ import com.ruskonert.GamblKing.engine.entity.Player;
 import com.ruskonert.GamblKing.engine.server.Channel;
 import com.ruskonert.GamblKing.engine.server.ConsoleSender;
 import com.ruskonert.GamblKing.engine.server.Server;
-import com.ruskonert.Gamblking.util.ReflectionUtil;
-import com.ruskonert.Gamblking.util.SystemUtil;
+import com.ruskonert.GamblKing.util.ReflectionUtil;
+import com.ruskonert.GamblKing.util.SystemUtil;
 
 import java.io.File;
 import java.io.IOException;

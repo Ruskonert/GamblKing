@@ -1,14 +1,14 @@
 package com.ruskonert.GamblKing.engine.event.program;
 
 import com.ruskonert.GamblKing.engine.GameServer;
-import com.ruskonert.GamblKing.engine.event.LayoutListener;
+import com.ruskonert.GamblKing.event.LayoutListener;
 
 import com.ruskonert.GamblKing.engine.MessageType;
 import com.ruskonert.GamblKing.engine.program.AppFramework;
 import com.ruskonert.GamblKing.engine.program.ProgramManager;
 import com.ruskonert.GamblKing.engine.program.component.ProgramComponent;
 import com.ruskonert.GamblKing.engine.server.ConsoleSender;
-import com.ruskonert.Gamblking.util.ReflectionUtil;
+import com.ruskonert.GamblKing.util.ReflectionUtil;
 
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;

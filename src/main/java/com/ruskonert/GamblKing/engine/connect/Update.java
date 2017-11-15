@@ -1,7 +1,7 @@
-package com.ruskonert.GamblKing.engine.connect.server;
+package com.ruskonert.GamblKing.engine.connect;
 
 import com.ruskonert.GamblKing.engine.program.ProgramManager;
-import com.ruskonert.Gamblking.util.SecurityUtil;
+import com.ruskonert.GamblKing.util.SecurityUtil;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 

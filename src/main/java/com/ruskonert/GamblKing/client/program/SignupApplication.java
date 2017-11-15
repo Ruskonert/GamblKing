@@ -1,8 +1,8 @@
 package com.ruskonert.GamblKing.client.program;
 
 import com.ruskonert.GamblKing.client.event.SignupLayoutEvent;
-import com.ruskonert.GamblKing.engine.program.StageBuilder;
-import com.ruskonert.Gamblking.util.SystemUtil;
+import com.ruskonert.GamblKing.program.StageBuilder;
+import com.ruskonert.GamblKing.util.SystemUtil;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
