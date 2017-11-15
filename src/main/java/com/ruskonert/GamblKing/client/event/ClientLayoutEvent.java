@@ -7,9 +7,11 @@ import com.ruskonert.GamblKing.client.program.SignupApplication;
 import com.ruskonert.GamblKing.client.program.component.ClientComponent;
 import com.ruskonert.GamblKing.event.LayoutListener;
 
+import com.ruskonert.GamblKing.util.SystemUtil;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import javafx.scene.control.Alert;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
@@ -24,9 +26,23 @@ public class ClientLayoutEvent implements LayoutListener
 
     clientComponent.LoginButton.setOnMouseClicked(event -> Platform.runLater(() ->
     {
+        if(clientComponent.InputID.getText().isEmpty())
+        {
+            SystemUtil.Companion.alert("경고", "아이디가 비어있움", "아이디를 입력하세요.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        if(clientComponent.InputPassword.getText().isEmpty())
+        {
+            SystemUtil.Companion.alert("경고", "비밀번호가 비어있움", "비밀번호를 입력하세요.", Alert.AlertType.WARNING);
+            return;
+        }
+
         ClientConnectionReceiver.refreshClientConnection();
-        Platform.runLater(() -> { LoginConnectionPacket connection = new LoginConnectionPacket(clientComponent.InputID.getText(),
-                clientComponent.InputPassword.getText());connection.send();}); }));
+        Platform.runLater(() -> {
+            LoginConnectionPacket connection = new LoginConnectionPacket(clientComponent.InputID.getText(), clientComponent.InputPassword.getText());
+            connection.send();});
+    }));
 
     clientComponent.FishingButton.setOnMouseClicked(event -> Platform.runLater(() ->
         {

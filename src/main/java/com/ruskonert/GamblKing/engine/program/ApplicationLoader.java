@@ -8,11 +8,12 @@ import com.ruskonert.GamblKing.engine.data.Pointer;
 import com.ruskonert.GamblKing.engine.ProgramApplication;
 import com.ruskonert.GamblKing.engine.program.component.ProgramComponent;
 
-import javafx.application.Application;
+import javafx.application.Application;-
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;

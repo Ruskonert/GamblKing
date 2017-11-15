@@ -11,6 +11,7 @@ import com.ruskonert.GamblKing.engine.server.Server;
 import com.ruskonert.GamblKing.program.StageBuilder;
 import com.ruskonert.GamblKing.util.SystemUtil;
 import com.ruskonert.GamblKing.engine.ProgramApplication;
+
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

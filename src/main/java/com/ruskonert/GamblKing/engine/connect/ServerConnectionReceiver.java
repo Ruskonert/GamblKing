@@ -89,6 +89,7 @@ public class ServerConnectionReceiver
                     // EOF 에러 시 해당 클라이언트는 꺼진 상태입니다.
                     try
                     {
+                        // 요청받은 메세지를 JsonObject로 가져옵니다.
                         JsonObject jo = getFramework(jsonReceivedMessage, JsonObject.class);
                         int connectionNumber = jo.get("status").getAsInt();
                         if(connectionNumber == ServerProperty.REQUEST_LOGIN)
@@ -115,6 +116,7 @@ public class ServerConnectionReceiver
                             }
                         }
 
+                        // 로그인이 성공했을 경우입니다.
                         if(connectionNumber == ServerProperty.RECEVIED_LOGIN_SUCCESS)
                         {
                             JsonObject jo2 = getFramework(jsonReceivedMessage, JsonObject.class);
@@ -145,6 +147,7 @@ public class ServerConnectionReceiver
                             }
                         }
 
+                        // 업데이트 서버에 파일 목록에 대한 요청 받아 서버 내 업데이트 파일을 다시 보냄
                         if(connectionNumber == ServerProperty.SEND_UPDATE_REQURST)
                         {
                             Gson gsonSerialize = new GsonBuilder().registerTypeAdapter(Map.class, new JsonSerializer<Map<String, File>>() {
@@ -162,6 +165,7 @@ public class ServerConnectionReceiver
                             out.writeUTF(gsonSerialize.toJson(Update.getUpdateFiles()));
                         }
 
+                        // 작동에 필요한 파일 목록을 가져오고 Update server socket을 열어달라는 요청을 보냅니다.
                         if(connectionNumber == ServerProperty.SEND_UPDATE_FILE_REQUEST)
                         {
                             String s = jo.get("data").toString();

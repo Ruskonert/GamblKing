@@ -7,11 +7,13 @@ import com.ruskonert.GamblKing.client.ClientLoader;
 import com.ruskonert.GamblKing.client.program.SignupApplication;
 import com.ruskonert.GamblKing.client.program.UpdateApplication;
 import javafx.application.Platform;
+import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.io.*;
+
 import java.net.Socket;
 import java.net.SocketException;
 
@@ -88,18 +90,33 @@ public class ClientConnectionReceiver
         {
             JsonObject jo = new JsonObject();
             jo.addProperty("statusNumber", ServerProperty.RECEVIED_LOGIN_SUCCESS);
-            jo.addProperty("message", "Connecting update server");
+            jo.addProperty("message", "Connecting update server from " + ClientLoader.getBackgroundConnection().
+                    getSocket().getInetAddress().getHostAddress());
 
+            Service<Void> service = new Service<Void>() {
+                @Override
+                protected Task createTask() {
+                    return new Task() {
+                        @Override
+                        protected Object call() throws Exception
+                        {
+                            return null;
+                        }
+                    };
+                }
+            };
             Platform.runLater(() -> new UpdateApplication().start(new Stage()));
         }
     }
 
-
+    // 데이터를 주기적으로 읽어옵니다
     public void readData()
     {
-        while (in != null) {
+        while (in != null)
+        {
             try
             {
+                // 데이터는 무조건 json message로 받습니다.
                 receivedMessage = in.readUTF();
             }
             catch (IOException e)
@@ -110,6 +127,7 @@ public class ClientConnectionReceiver
                 break;
             }
 
+            // 요청받은 데이터를 jsonObject로 바꿉니다.
             JsonObject requestedJsonObject = new Gson().fromJson(receivedMessage, JsonObject.class);
             int status = 0;
 

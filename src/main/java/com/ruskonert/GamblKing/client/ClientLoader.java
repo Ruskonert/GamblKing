@@ -9,6 +9,7 @@ import com.ruskonert.GamblKing.event.EventListener;
 import com.ruskonert.GamblKing.event.LayoutListener;
 import com.ruskonert.GamblKing.program.Register;
 import com.ruskonert.GamblKing.util.SystemUtil;
+
 import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
@@ -20,9 +21,9 @@ import javafx.stage.StageStyle;
 
 public class ClientLoader extends Application implements ProgramInitializable, Register
 {
-
     private static Stage stage;
     public static Stage getStage() { return stage; }
+
 
     private static ClientConnectionReceiver backgroundConnection;
     public static ClientConnectionReceiver getBackgroundConnection() { return backgroundConnection; }

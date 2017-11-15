@@ -12,7 +12,7 @@
       <ProgressBar fx:id="UpdateProgressBar" layoutX="14.0" layoutY="166.0" prefHeight="20.0" prefWidth="575.0" />
       <ImageView fitHeight="85.0" fitWidth="85.0" layoutX="259.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@time.gif" />
+            <Image url="@slow_loading.gif" />
          </image>
       </ImageView>
       <Label layoutX="166.0" layoutY="115.0" text="서버로부터 업데이트 내용을 확인하고 있습니다...">
