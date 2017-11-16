@@ -18,35 +18,27 @@
                <Image url="@wallpaper.gif" />
             </image>
          </ImageView>
-         <AnchorPane layoutX="91.0" layoutY="56.0" prefHeight="426.0" prefWidth="402.0" style="-fx-background-color: #002F7F;">
-            <JFXTextField fx:id="InputID" focusColor="#435ba3" layoutX="53.0" layoutY="109.0" prefHeight="26.0" prefWidth="297.0" promptText="아이디" unFocusColor="WHITE">
-               <font>
-                  <Font name="NanumGothic" size="14.0" />
-               </font>
-            </JFXTextField>
-            <JFXPasswordField fx:id="InputPassword" layoutX="50.0" layoutY="208.0" prefHeight="26.0" prefWidth="303.0" promptText="비밀번호" unFocusColor="WHITE" AnchorPane.topAnchor="208.0">
-               <font>
-                  <Font name="NanumGothic" size="14.0" />
-               </font>
-            </JFXPasswordField>
+         <AnchorPane layoutX="87.0" layoutY="59.0" prefHeight="426.0" prefWidth="402.0" style="-fx-background-color: #002F7F;">
+            <JFXTextField fx:id="InputID" focusColor="#435ba3" layoutX="53.0" layoutY="109.0" prefHeight="26.0" prefWidth="297.0" promptText="아이디" unFocusColor="WHITE" />
+            <JFXPasswordField fx:id="InputPassword" layoutX="50.0" layoutY="208.0" prefHeight="26.0" prefWidth="303.0" promptText="비밀번호" unFocusColor="WHITE" AnchorPane.topAnchor="208.0" />
             <JFXButton fx:id="LoginButton" layoutX="74.0" layoutY="280.0" prefHeight="41.0" prefWidth="255.0" style="-fx-background-color: #0083FF; -fx-border-radius: 2em;" text="login" textFill="WHITE">
                <font>
-                  <Font name="NanumGothic" size="15.0" />
+                  <Font name="NanumGothicOTF" size="16.0" />
                </font>
             </JFXButton>
             <JFXButton fx:id="RegisterButton" layoutX="74.0" layoutY="340.0" prefHeight="41.0" prefWidth="255.0" style="-fx-background-color: #0083FF; -fx-border-radius: 2em;" text="Sign up" textFill="WHITE">
                <font>
-                  <Font name="NanumGothic" size="15.0" />
+                  <Font name="NanumGothicOTF" size="16.0" />
                </font>
             </JFXButton>
             <Label layoutX="129.0" layoutY="20.0" prefHeight="52.0" prefWidth="145.0" text="Sign In" textFill="WHITE">
                <font>
-                  <Font name="NanumGothic" size="43.0" />
+                  <Font name="NanumGothicOTF" size="42.0" />
                </font>
             </Label>
             <Label layoutX="129.0" layoutY="397.0" text="비밀번호를 잊어버렸습니까?" textFill="WHITE">
                <font>
-                  <Font name="NanumGothic" size="12.0" />
+                  <Font size="12.0" />
                </font>
             </Label>
          </AnchorPane>
@@ -55,17 +47,16 @@
                <Image url="@time.gif" />
             </image>
          </ImageView>
-         <Label layoutX="620.0" layoutY="171.0" prefHeight="52.0" prefWidth="366.0" text="환영합니다!" textFill="WHITE">
+         <Label layoutX="624.0" layoutY="194.0" prefHeight="52.0" prefWidth="366.0" text="환영합니다!" textFill="WHITE">
             <font>
                <Font name="NanumGothic" size="35.0" />
             </font>
          </Label>
-         <Label layoutX="620.0" layoutY="211.0" prefHeight="61.0" prefWidth="480.0" text="이 프로그램은 당신에게 평온감과 온화함을 느끼게 해주는 매우 건전한 프로그램입니다. 이 프로그램은 자바 과제 제출용으로 만들었습니다." textFill="WHITE" wrapText="true">
+         <Label layoutX="624.0" layoutY="234.0" prefHeight="61.0" prefWidth="480.0" text="이 프로그램은 당신에게 평온감과 온화함을 느끼게 해주는 매우 건전한 프로그램입니다. 이 프로그램은 자바 과제 제출용으로 만들었습니다." textFill="WHITE" wrapText="true">
             <font>
-               <Font name="NanumGothic" size="13.0" />
-            </font>
-         </Label>
-         <JFXButton fx:id="FishingButton" layoutX="738.0" layoutY="287.0" prefHeight="41.0" prefWidth="255.0" style="-fx-background-color: #0083FF; -fx-background-radius: 2em;" text="미리 체험하기" textFill="WHITE">
+               <Font name="NanumGothicOTF" size="13.0" />
+            </font></Label>
+         <JFXButton fx:id="FishingButton" layoutX="742.0" layoutY="315.0" prefHeight="41.0" prefWidth="255.0" style="-fx-background-color: #0083FF; -fx-background-radius: 2em;" text="미리 체험하기" textFill="WHITE">
             <font>
                <Font name="NanumGothic" size="15.0" />
             </font>

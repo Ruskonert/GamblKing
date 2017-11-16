@@ -1,16 +1,31 @@
 @file:JvmName("SystemUtil")
 package com.ruskonert.GamblKing.util
 
+import com.google.gson.Gson
+import com.google.gson.JsonElement
 import javafx.application.Platform
+import javafx.scene.control.Alert
 import java.io.*
 import java.net.URL
 import javax.swing.JOptionPane
-import javafx.scene.control.Alert
 
 class SystemUtil
 {
     companion object
     {
+        fun fixHashMap(json: String): String
+        {
+            var s = json.replace("\\\\".toRegex(), "")
+            s = s.replaceFirst("\"".toRegex(), "")
+            return s
+        }
+
+        fun getMapFromJson(json: JsonElement): Map<*, *>? {
+            return Gson().fromJson(fixHashMap(json.toString()), Map::class.java)
+        }
+
+
+
         fun error(e : Exception)
         {
             val stes = e.stackTrace

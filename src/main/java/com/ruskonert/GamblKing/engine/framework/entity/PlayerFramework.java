@@ -54,7 +54,7 @@ public class PlayerFramework implements Player, MessageDispatcher
         Gson gson = new GsonBuilder().serializeNulls().create();
         String jsonMessage = gson.toJson(framework);
         File dataFolder = GameServer.getServer().getDataFolder();
-        File playerFile = new File(dataFolder, "/player/" + framework.getNickname() + ".json");
+        File playerFile = new File(dataFolder, "/player/" + framework.getId() + ".json");
         try
         {
             if(playerFile.createNewFile())

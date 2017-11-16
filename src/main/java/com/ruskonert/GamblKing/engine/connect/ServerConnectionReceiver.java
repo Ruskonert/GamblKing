@@ -1,7 +1,8 @@
 package com.ruskonert.GamblKing.engine.connect;
 
-import com.google.gson.*;
-import com.ruskonert.GamblKing.client.ClientLoader;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import com.ruskonert.GamblKing.client.connect.packet.LoginConnectionPacket;
 import com.ruskonert.GamblKing.client.connect.packet.RegisterConnectionPacket;
 import com.ruskonert.GamblKing.engine.GameServer;
@@ -10,15 +11,13 @@ import com.ruskonert.GamblKing.engine.framework.entity.PlayerFramework;
 import com.ruskonert.GamblKing.property.ServerProperty;
 import com.ruskonert.GamblKing.util.SecurityUtil;
 import com.ruskonert.GamblKing.util.SystemUtil;
+
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 
 import java.io.*;
-import java.lang.reflect.Type;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class ServerConnectionReceiver
 {
@@ -147,36 +146,23 @@ public class ServerConnectionReceiver
                             }
                         }
 
-                        // 업데이트 서버에 파일 목록에 대한 요청 받아 서버 내 업데이트 파일을 다시 보냄
+                        // 업데이트 서버에 파일 목록에 대한 요청을 받고 서버 내 업데이트 파일의 대한 정보를 보냄
                         if(connectionNumber == ServerProperty.SEND_UPDATE_REQURST)
                         {
-                            Gson gsonSerialize = new GsonBuilder().registerTypeAdapter(Map.class, new JsonSerializer<Map<String, File>>() {
-                                JsonObject obj = new JsonObject();
-                                @Override
-                                public JsonElement serialize(Map<String, File> src, Type typeOfSrc, JsonSerializationContext context)
-                                {
-                                   for(String s : src.keySet())
-                                   {
-                                       obj.addProperty(s, src.get(s).getPath());
-                                   }
-                                   return obj;
-                                }
-                            }).create();
-                            out.writeUTF(gsonSerialize.toJson(Update.getUpdateFiles()));
+                            Gson gsonSerialize = new Gson();
+                            JsonObject object = new JsonObject();
+
+                            object.addProperty("status", ServerProperty.SEND_UPDATE_REQURST_RECEIVED);
+                            object.addProperty("data", SystemUtil.Companion.fixHashMap(gsonSerialize.toJson(Update.getUpdateFiles()).toString()));
+                            out.writeUTF(object.toString());
+
                         }
 
                         // 작동에 필요한 파일 목록을 가져오고 Update server socket을 열어달라는 요청을 보냅니다.
                         if(connectionNumber == ServerProperty.SEND_UPDATE_FILE_REQUEST)
                         {
-                            String s = jo.get("data").toString();
-                            String[] split = s.split(",");
-                            List<String> l = new ArrayList();
-                            for(String s2 : split)
-                            {
-                                l.add(s2);
-                            }
-                            l.remove(l.size() - 1);
-                            sendFileByteSocket(l.toArray(new String[l.size()]));
+                            String path = jo.get("path").getAsString();
+                            Platform.runLater(() -> UpdateSender.start(jo.get("ipAddress").toString(), 8888, path));
                         }
                     }
                     catch(Exception e)
@@ -198,28 +184,6 @@ public class ServerConnectionReceiver
             return null;
         }
     };
-
-    private void sendFileByteSocket(String[] hashes)
-    {
-        Socket socket = ClientLoader.getBackgroundConnection().getSocket();
-        try
-        {
-        BufferedOutputStream out = new BufferedOutputStream(socket.getOutputStream());
-        FileInputStream filein;
-            for (String hash : hashes)
-            {
-                filein = new FileInputStream(Update.getUpdateFiles().get(hash));
-                byte[] buffer = new byte[8192];
-                int bytesRead = 0;
-                while ((bytesRead = filein.read(buffer)) > 0) { out.write(buffer, 0, bytesRead); }
-            }
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
 
     public void asyncStart()
     {

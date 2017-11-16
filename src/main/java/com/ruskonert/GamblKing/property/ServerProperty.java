@@ -19,7 +19,7 @@ public final class ServerProperty
     public static final int REGISTER_SUCCESSED_ACCOUNT = 504;
     public static final int REGISTER_FAILED_ACCOUNT    = 505;
 
-    public static final String SERVER_ADDRESS          = "127.0.0.1";
+    public static final String SERVER_ADDRESS          = "localhost";
     public static final int    SERVER_PORT             = 7743;
 
 
@@ -35,7 +35,9 @@ public final class ServerProperty
     public static final int CHECK_UPDATE_FINISHED      = 602;
 
     public static final int SEND_UPDATE_REQURST        = 700;
-    public static final int SEND_UPDATE_FILE_REQUEST   = 701;
+    public static final int SEND_UPDATE_REQURST_RECEIVED = 701;
+
+    public static final int SEND_UPDATE_FILE_REQUEST   = 702;
 
     public static final int SIGNAL_FILE_UPLOADED       = 800;
 }

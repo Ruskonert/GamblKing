@@ -12,7 +12,15 @@ import java.util.Map;
 public final class Update
 {
     private static Map<String, File> updateFiles = new HashMap<>();
-    public static Map<String, File> getUpdateFiles()  { return updateFiles; }
+    public static Map<String, String> getUpdateFiles()
+    {
+        Map<String, String> m = new HashMap<>();
+        for(String k : updateFiles.keySet())
+        {
+            m.put(k, updateFiles.get(k).getPath());
+        }
+        return m;
+    }
 
     public synchronized static void update()
     {
@@ -39,7 +47,7 @@ public final class Update
                 {
                     e.printStackTrace();
                 }
-                updateFiles.put(sha256, file);
+                updateFiles.put(sha256, new File(file.getPath() .split("/")[1]));
                 sendTo(label, "register update files from " + sha256);
             }
             try
