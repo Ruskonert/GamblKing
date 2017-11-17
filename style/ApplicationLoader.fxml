@@ -7,46 +7,51 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ruskonert.GamblKing.engine.program.component.PreloadComponent">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ruskonert.GamblKing.engine.program.component.PreloadComponent">
    <children>
-      <ImageView fitHeight="186.0" fitWidth="304.0" layoutX="168.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="186.0" fitWidth="304.0" layoutX="165.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@loading-gears-animation-3.gif" />
          </image>
       </ImageView>
-      <Label layoutX="13.0" layoutY="264.0" text="순천향대학교 정보보호학과 1조">
+      <Label layoutX="14.0" layoutY="239.0" text="순천향대학교 정보보호학과 1조">
          <font>
-            <Font name="NanumGothicOTF" size="16.0" />
+            <Font name="NanumSquare Regular" size="17.0" />
          </font>
       </Label>
       <ProgressBar fx:id="LoadingProgressBar" layoutX="9.0" layoutY="331.0" prefHeight="20.0" prefWidth="582.0" />
-      <Label fx:id="StatusLabel" layoutX="11.0" layoutY="354.0" prefHeight="23.0" prefWidth="582.0" text="서버에 필요한 리소스 확인하는 중">
+      <Label fx:id="StatusLabel" layoutX="11.0" layoutY="354.0" prefHeight="23.0" prefWidth="582.0" text="Checking resources required for server...">
          <font>
             <Font name="Courier New" size="12.0" />
          </font>
       </Label>
       <AnchorPane layoutX="-7.0" layoutY="376.0" prefHeight="27.0" prefWidth="607.0" style="-fx-background-color: #1d1d1d;">
          <children>
-            <Label layoutX="15.0" layoutY="5.0" text="Source code: https://github.com/ruskonert/GameServer" textFill="WHITE">
+            <Label layoutX="15.0" layoutY="5.0" text="Source code: https://github.com/ruskonert/GamblKing-Server" textFill="WHITE">
                <font>
-                  <Font name="NanumGothic" size="13.0" />
+                  <Font name="Monospaced Regular" size="13.0" />
                </font>
             </Label>
          </children>
       </AnchorPane>
-      <Label layoutX="14.0" layoutY="286.0" text="Java Project">
+      <Label alignment="CENTER" layoutX="14.0" layoutY="281.0" prefHeight="5.0" prefWidth="125.0" text="20144331 고영건">
          <font>
-            <Font name="NanumGothicOTF" size="16.0" />
+            <Font name="NanumSquare Regular" size="15.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="9.0" layoutY="303.0" prefHeight="27.0" prefWidth="137.0" text="20164586 김준원">
+      <Label layoutX="68.0" layoutY="167.0" text="서버 관리 프로그램을 활성화하는 중">
          <font>
-            <Font name="NanumGothicOTF" size="16.0" />
+            <Font name="NanumSquare Regular" size="32.0" />
          </font>
       </Label>
-      <Label layoutX="53.0" layoutY="180.0" text="서버 관리 프로그램을 활성화하는 중">
+      <Label alignment="CENTER" layoutX="14.0" layoutY="262.0" prefHeight="4.0" prefWidth="125.0" text="20144299 백상훈">
          <font>
-            <Font name="NanumGothic" size="32.0" />
+            <Font name="NanumSquare Regular" size="15.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="18.0" layoutY="300.0" prefHeight="16.0" prefWidth="117.0" text="20164586 김준원">
+         <font>
+            <Font name="NanumSquare Regular" size="15.0" />
          </font>
       </Label>
    </children>

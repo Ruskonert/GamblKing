@@ -21,7 +21,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.io.File;
+import java.io.*;
 
 public final class ApplicationLoader extends Application implements ProgramInitializable
 {
@@ -32,7 +32,11 @@ public final class ApplicationLoader extends Application implements ProgramIniti
 
     @Override public void start(Stage primaryStage)
     {
-        this.initialize(primaryStage);
+        try {this.initialize(primaryStage); }
+        catch(Exception e)
+        {
+            SystemUtil.Companion.error(e);
+        }
     }
 
     @Override
@@ -90,12 +94,14 @@ public final class ApplicationLoader extends Application implements ProgramIniti
         Pointer<Integer> process = new Pointer<>(0);
         Label label = ProgramManager.getPreloadComponent().getStatusLabel();
         File folder = new File(System.getProperty("user.dir"));
+        int fileCount = this.getFilesCount(folder);
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception
             {
                 Update.update();
-                checkFileResource(folder, label, process);
+                if(fileCount != 0) checkFileResource(folder, label, process);
+
                 Platform.runLater(() -> label.setText("서버 관리 프로그램을 열고 있습니다..."));
                 Platform.runLater(() -> ProgramManager.getPreloadComponent().getLoadingProgressBar().setProgress(ProgressBar.INDETERMINATE_PROGRESS));
                 Thread.sleep(2000L);
@@ -110,8 +116,7 @@ public final class ApplicationLoader extends Application implements ProgramIniti
             @Override
             protected Task<Void> createTask() {
                 return new Task<Void>() {
-                    private int totalFileCount = SystemUtil.Companion.getFiles(folder);
-
+                    private int totalFileCount = fileCount;
                     @Override
                     protected Void call() throws Exception {
                         while (true) {
@@ -125,12 +130,30 @@ public final class ApplicationLoader extends Application implements ProgramIniti
                 };
             }
         };
-
         Thread checkingThread = new Thread(task);
-
         checkingThread.start();
         progressTask.start();
     }
+
+    private int getFilesCount(File file)
+    {
+        if(file.listFiles().length == 0) return 0;
+        return this.getFilesCount(file, 0);
+    }
+
+    private int getFilesCount(File file, int count)
+    {
+        for(File f : file.listFiles())
+        {
+            if(f.isDirectory())
+            {
+                return this.getFilesCount(f, count);
+            }
+            else if(f.isFile()) count++;
+        }
+        return count;
+    }
+
 
     private void checkFileResource(final File folder, Label label, Pointer<Integer> progress) throws InterruptedException
     {
@@ -146,7 +169,7 @@ public final class ApplicationLoader extends Application implements ProgramIniti
                 Platform.runLater(() -> label.setText("Checking for file: " + fileEntry.toString()));
                 progress.ptr++;
             }
-            Thread.sleep(3L);
+            Thread.sleep(2L);
         }
     }
 

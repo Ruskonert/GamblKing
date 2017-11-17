@@ -92,12 +92,14 @@ public abstract class TargetBuilder<E> implements HandleInstance
                     Field methodToField = referenceClazz.getDeclaredField(fieldName.split("#")[0]);
                     Class<?> targetClazz = this.getFromComponents(methodToField).getClass();
                     Method referenceMethod = targetClazz.getMethod(fieldName.split("#")[1]);
+                    referenceMethod.toString();
 
                     field.set(this.genericInstance, referenceMethod.invoke(this.getFromComponents(methodToField)));
                 }
                 else
                 {
                     Class<?> referenceClazz = Class.forName(packageName);
+
                     Field targetField = referenceClazz.getDeclaredField(fieldName);
                     targetField.setAccessible(true);
 

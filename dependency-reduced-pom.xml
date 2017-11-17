@@ -2,35 +2,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.ruskonert</groupId>
-  <artifactId>GameServer</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <artifactId>GamblKing-Server</artifactId>
+  <version>1.0</version>
   <build>
-    <sourceDirectory>/src/main/java</sourceDirectory>
+    <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+    <resources>
+      <resource>
+        <targetPath>style</targetPath>
+        <directory>style</directory>
+      </resource>
+    </resources>
     <plugins>
-      <plugin>
-        <groupId>org.jetbrains.kotlin</groupId>
-        <artifactId>kotlin-maven-plugin</artifactId>
-        <version>${kotlin.version}</version>
-        <executions>
-          <execution>
-            <id>compile</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>test-compile</id>
-            <phase>test-compile</phase>
-            <goals>
-              <goal>test-compile</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <jvmTarget>1.8</jvmTarget>
-        </configuration>
-      </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.7.0</version>
@@ -57,27 +39,26 @@
       </plugin>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>2.4.3</version>
+        <version>2.4.2</version>
         <executions>
           <execution>
             <phase>package</phase>
             <goals>
               <goal>shade</goal>
             </goals>
+            <configuration>
+              <minimizeJar>true</minimizeJar>
+            </configuration>
           </execution>
         </executions>
-        <configuration>
-          <minimizeJar>true</minimizeJar>
-        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
         <version>3.0.2</version>
         <configuration>
-          <finalName>${jar.name}</finalName>
-          <outputDirectory>${project.build.directory}</outputDirectory>
           <archive>
             <manifest>
+              <addClasspath>true</addClasspath>
               <mainClass>com.ruskonert.GamblKing.engine.program.ApplicationLoader</mainClass>
             </manifest>
           </archive>
@@ -92,17 +73,5 @@
       <url>https://oss.sonatype.org/content/groups/public/</url>
     </pluginRepository>
   </pluginRepositories>
-  <dependencies>
-    <dependency>
-      <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-test</artifactId>
-      <version>1.1.51</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-  <properties>
-    <jar.name>${project.artifactId}-${project.version}</jar.name>
-    <kotlin.version>1.1.51</kotlin.version>
-  </properties>
 </project>
 

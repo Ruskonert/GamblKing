@@ -3,8 +3,9 @@ package com.ruskonert.GamblKing.engine.connect;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import com.ruskonert.GamblKing.client.connect.packet.LoginConnectionPacket;
-import com.ruskonert.GamblKing.client.connect.packet.RegisterConnectionPacket;
+import com.ruskonert.GamblKing.connect.packet.LoginConnectionPacket;
+import com.ruskonert.GamblKing.connect.packet.RegisterConnectionPacket;
+
 import com.ruskonert.GamblKing.engine.GameServer;
 import com.ruskonert.GamblKing.engine.entity.Player;
 import com.ruskonert.GamblKing.engine.framework.entity.PlayerFramework;
@@ -21,10 +22,12 @@ import java.net.Socket;
 
 public class ServerConnectionReceiver
 {
-    private DataInputStream in;
-    private DataOutputStream out;
-    private String jsonReceivedMessage;
+    private static DataInputStream in;
 
+    private static DataOutputStream out;
+    public static DataOutputStream getOutputStream() { return out; }
+
+    private String jsonReceivedMessage;
     private InetAddress address;
 
     public ServerConnectionReceiver(Socket socket) throws IOException
@@ -46,16 +49,6 @@ public class ServerConnectionReceiver
     {
         ConnectionBackground.clientMap.remove(address);
         GameServer.getServer().getConsoleSender().log(address.getHostAddress() + "님이 서버에서 나갔습니다.");
-
-    }
-
-    private void sendRegisterSocket(int status, String message)
-    {
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("status", status);
-        jsonObject.addProperty("requestIp", address.getHostName());
-        jsonObject.addProperty("message", message);
-        this.send(jsonObject.toString());
     }
 
     private void send(String message)
@@ -68,6 +61,16 @@ public class ServerConnectionReceiver
         {
             e.printStackTrace();
         }
+    }
+
+
+    private void sendRegisterSocket(int status, String message)
+    {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("status", status);
+        jsonObject.addProperty("requestIp", address.getHostName());
+        jsonObject.addProperty("message", message);
+        this.send(jsonObject.toString());
     }
 
     private <T> T getFramework(String jsonMessage, Class<T> type)
