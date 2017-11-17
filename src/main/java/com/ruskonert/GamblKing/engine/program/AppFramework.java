@@ -18,6 +18,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.File;
+
 /**
  * 어플리케이션을 자동으로 설계하고 각종 프레임워크를 작성하여 서버가 작동할 수 있도록 합니다.<br>
  * 또한 사용자 이벤트 또는 기본 이벤트를 등록하여 서버 이벤트를 제대로 핸들링할 수 있도록 설계하며

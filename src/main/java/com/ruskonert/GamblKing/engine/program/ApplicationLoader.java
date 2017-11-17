@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.*;
+import java.net.URISyntaxException;
 
 public final class ApplicationLoader extends Application implements ProgramInitializable
 {
@@ -42,6 +43,7 @@ public final class ApplicationLoader extends Application implements ProgramIniti
     @Override
     public final boolean initialize(Object handleInstance)
     {
+        this.onInit();
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception
@@ -71,6 +73,22 @@ public final class ApplicationLoader extends Application implements ProgramIniti
         catch (Exception e) {
             SystemUtil.Companion.error(e);
             return false;
+        }
+    }
+
+
+    private void onInit() {
+
+        File data = new File(System.getProperty("user.dir") + "/data");
+        File update = new File(System.getProperty("user.dir") + "/update");
+        if (!data.exists())
+        {
+            data.mkdir();
+        }
+
+        if(!update.exists())
+        {
+            update.mkdir();
         }
     }
 
