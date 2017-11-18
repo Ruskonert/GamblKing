@@ -1,6 +1,6 @@
 package com.ruskonert.GamblKing.engine.connect;
 
-import com.ruskonert.GamblKing.engine.entity.Player;
+import com.ruskonert.GamblKing.entity.Player;
 
 import java.util.List;
 import java.util.Map;

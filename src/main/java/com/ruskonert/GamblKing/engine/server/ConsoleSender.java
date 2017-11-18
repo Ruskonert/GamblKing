@@ -1,8 +1,7 @@
 package com.ruskonert.GamblKing.engine.server;
 
-import com.ruskonert.GamblKing.engine.entity.MessageDispatcher;
-
 import com.ruskonert.GamblKing.engine.MessageType;
+import com.ruskonert.GamblKing.entity.MessageDispatcher;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;

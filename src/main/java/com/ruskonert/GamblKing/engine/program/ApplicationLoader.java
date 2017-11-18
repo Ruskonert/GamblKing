@@ -4,7 +4,6 @@ import com.ruskonert.GamblKing.ProgramInitializable;
 import com.ruskonert.GamblKing.util.SystemUtil;
 
 import com.ruskonert.GamblKing.engine.connect.Update;
-import com.ruskonert.GamblKing.engine.data.Pointer;
 import com.ruskonert.GamblKing.engine.ProgramApplication;
 import com.ruskonert.GamblKing.engine.program.component.ProgramComponent;
 
@@ -22,7 +21,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.*;
-import java.net.URISyntaxException;
 
 public final class ApplicationLoader extends Application implements ProgramInitializable
 {
@@ -107,7 +105,7 @@ public final class ApplicationLoader extends Application implements ProgramIniti
         stage.show();
     }
 
-    private synchronized void checkResourceProcess(Task<?> syncStart)
+    private void checkResourceProcess(Task<?> syncStart)
     {
         Pointer<Integer> process = new Pointer<>(0);
         Label label = ProgramManager.getPreloadComponent().getStatusLabel();

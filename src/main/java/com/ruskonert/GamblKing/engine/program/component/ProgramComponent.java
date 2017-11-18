@@ -31,8 +31,8 @@ public final class ProgramComponent implements Initializable
     public ProgramComponent() {}
 
     public static String PROGRAM_NAME = "GameServer Management";
-    public static int PROGRAM_HEIGHT  = 536;
-    public static int PROGRAM_WIDTH   = 804;
+    public static int PROGRAM_HEIGHT  = 535;
+    public static int PROGRAM_WIDTH   = 788;
 
     /*
     * MenuBar FXML Module

@@ -12,10 +12,8 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="MainScreen" maxHeight="-Infinity" maxWidth="-Infinity"
-            minHeight="-Infinity" minWidth="-Infinity" prefHeight="536.0" prefWidth="804.0"
-            xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ruskonert.GamblKing.engine.program.component.ProgramComponent">
-   <AnchorPane focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="80.0" prefWidth="804.0" style="-fx-background-color: #155d92;">
+<AnchorPane fx:id="MainScreen" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="545.0" prefWidth="798.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ruskonert.GamblKing.engine.program.component.ProgramComponent">
+   <AnchorPane focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="80.0" prefWidth="798.0" style="-fx-background-color: #155d92;">
       <ImageView fx:id="ConsoleMenuButton" fitHeight="56.0" fitWidth="56.0" layoutX="14.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
          <Image url="@icons8-console.png" />
       </ImageView>
@@ -26,19 +24,37 @@
          <Image url="@icons8-shutdown-filled.png" />
       </ImageView>
    </AnchorPane>
-   <AnchorPane layoutY="80.0" prefHeight="461.0" prefWidth="804.0" style="-fx-background-color: #17689F;">
+   <AnchorPane layoutY="80.0" prefHeight="475.0" prefWidth="798.0" style="-fx-background-color: #17689F;">
       <Label layoutX="15.0" layoutY="10.0" text="Output Console" textFill="WHITE" />
-      <TextArea fx:id="ConsoleScreen" layoutX="15.0" layoutY="31.0" prefHeight="334.0" prefWidth="596.0" />
-      <JFXButton fx:id="MainStartButton" layoutX="15.0" layoutY="407.0" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #155d92; -fx-border-radius: 5em;" text="Start" textFill="WHITE" textOverrun="WORD_ELLIPSIS" />
-      <JFXButton fx:id="MainCancelButton" layoutX="333.0" layoutY="407.0" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #155d92; -fx-border-radius: 5em;" text="Cancel" textFill="WHITE" textOverrun="WORD_ELLIPSIS" />
-      <JFXButton fx:id="MainClearButton" layoutX="174.0" layoutY="407.0" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #155d92; -fx-border-radius: 5em;" text="Clear" textFill="WHITE" textOverrun="WORD_ELLIPSIS" />
-      <JFXButton fx:id="MainExitButton" layoutX="490.0" layoutY="407.0" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #155d92; -fx-border-radius: 5em;" text="Exit" textFill="WHITE" textOverrun="WORD_ELLIPSIS" />
+      <TextArea fx:id="ConsoleScreen" layoutX="15.0" layoutY="31.0" prefHeight="334.0" prefWidth="596.0">
+         <font>
+            <Font name="Courier New" size="12.0" />
+         </font></TextArea>
+      <JFXButton fx:id="MainStartButton" layoutX="15.0" layoutY="407.0" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #155d92; -fx-border-radius: 5em;" text="Start" textFill="WHITE" textOverrun="WORD_ELLIPSIS">
+         <font>
+            <Font name="Consolas" size="15.0" />
+         </font></JFXButton>
+      <JFXButton fx:id="MainCancelButton" layoutX="333.0" layoutY="407.0" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #155d92; -fx-border-radius: 5em;" text="Cancel" textFill="WHITE" textOverrun="WORD_ELLIPSIS">
+         <font>
+            <Font name="Consolas" size="15.0" />
+         </font></JFXButton>
+      <JFXButton fx:id="MainClearButton" layoutX="174.0" layoutY="407.0" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #155d92; -fx-border-radius: 5em;" text="Clear" textFill="WHITE" textOverrun="WORD_ELLIPSIS">
+         <font>
+            <Font name="Consolas" size="15.0" />
+         </font></JFXButton>
+      <JFXButton fx:id="MainExitButton" layoutX="490.0" layoutY="407.0" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #155d92; -fx-border-radius: 5em;" text="Exit" textFill="WHITE" textOverrun="WORD_ELLIPSIS">
+         <font>
+            <Font name="Consolas" size="15.0" />
+         </font></JFXButton>
       <TextField fx:id="ConsoleMessageField" layoutX="15.0" layoutY="375.0" prefHeight="21.0" prefWidth="516.0" promptText="Command or message">
          <font>
-            <Font size="10.0" />
+            <Font name="Consolas" size="11.0" />
          </font>
       </TextField>
-      <JFXButton fx:id="ConsoleSendButton" layoutX="543.0" layoutY="372.0" prefHeight="27.0" prefWidth="68.0" style="-fx-background-color: #155d92; -fx-border-radius: 5em;" text="Send" textFill="WHITE" textOverrun="WORD_ELLIPSIS" />
+      <JFXButton fx:id="ConsoleSendButton" layoutX="543.0" layoutY="372.0" prefHeight="27.0" prefWidth="68.0" style="-fx-background-color: #155d92; -fx-border-radius: 5em;" text="Send" textFill="WHITE" textOverrun="WORD_ELLIPSIS">
+         <font>
+            <Font name="Consolas" size="14.0" />
+         </font></JFXButton>
    </AnchorPane>
    <AnchorPane layoutY="80.0" prefHeight="461.0" prefWidth="804.0" style="-fx-background-color: #17689F;" visible="false" />
    <AnchorPane layoutY="75.0" prefHeight="487.0" prefWidth="804.0" style="-fx-background-color: #17689F;" visible="false">

@@ -3,10 +3,10 @@ package com.ruskonert.GamblKing.engine.framework;
 import com.ruskonert.GamblKing.engine.GameServer;
 import com.ruskonert.GamblKing.engine.connect.BindConnection;
 import com.ruskonert.GamblKing.engine.entity.OfflinePlayer;
-import com.ruskonert.GamblKing.engine.entity.Player;
 import com.ruskonert.GamblKing.engine.server.Channel;
 import com.ruskonert.GamblKing.engine.server.ConsoleSender;
 import com.ruskonert.GamblKing.engine.server.Server;
+import com.ruskonert.GamblKing.entity.Player;
 import com.ruskonert.GamblKing.util.ReflectionUtil;
 import com.ruskonert.GamblKing.util.SystemUtil;
 
@@ -19,6 +19,7 @@ import java.util.Map;
 
 public class GameServerFramework implements Server
 {
+
     public synchronized static void generate()
     {
         if(GameServer.getServer() == null) new GameServerFramework();

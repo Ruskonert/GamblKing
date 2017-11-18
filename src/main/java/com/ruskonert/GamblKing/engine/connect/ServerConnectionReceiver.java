@@ -5,10 +5,10 @@ import com.google.gson.JsonObject;
 
 import com.ruskonert.GamblKing.connect.packet.LoginConnectionPacket;
 import com.ruskonert.GamblKing.connect.packet.RegisterConnectionPacket;
-
 import com.ruskonert.GamblKing.engine.GameServer;
-import com.ruskonert.GamblKing.engine.entity.Player;
 import com.ruskonert.GamblKing.engine.framework.entity.PlayerFramework;
+
+import com.ruskonert.GamblKing.entity.Player;
 import com.ruskonert.GamblKing.property.ServerProperty;
 import com.ruskonert.GamblKing.util.SecurityUtil;
 import com.ruskonert.GamblKing.util.SystemUtil;
@@ -23,6 +23,7 @@ import java.net.Socket;
 public class ServerConnectionReceiver
 {
     private static DataInputStream in;
+    public static DataInputStream getInputStream() { return in; }
 
     private static DataOutputStream out;
     public static DataOutputStream getOutputStream() { return out; }
@@ -36,19 +37,19 @@ public class ServerConnectionReceiver
         in = new DataInputStream(socket.getInputStream());
         this.address = socket.getInetAddress();
         this.join(socket.getInetAddress(), out);
-        GameServer.getServer().getConsoleSender().log("The class ServerConnectionReceiver() was reinitialized from" + socket.getInetAddress().getHostAddress());
+        GameServer.getServer().getConsoleSender().log("The class ServerConnectionReceiver() was initialized from " + socket.getInetAddress().getHostAddress());
     }
 
     public void join(InetAddress address, DataOutputStream out)
     {
-        GameServer.getServer().getConsoleSender().log(address.getHostAddress() + "이(가) 서버에 접속하셨습니다.");
-        ConnectionBackground.clientMap.put(address, out);
+        GameServer.getServer().getConsoleSender().log(address.getHostAddress() + " joined the login server");
+        ConnectionBackground.getClientMap().put(address, out);
     }
 
     public void leave(InetAddress address)
     {
-        ConnectionBackground.clientMap.remove(address);
-        GameServer.getServer().getConsoleSender().log(address.getHostAddress() + "님이 서버에서 나갔습니다.");
+        ConnectionBackground.getClientMap().remove(address);
+        GameServer.getServer().getConsoleSender().log(address.getHostAddress() + " leaved the login server");
     }
 
     private void send(String message)
@@ -118,7 +119,7 @@ public class ServerConnectionReceiver
                             }
                         }
 
-                        // 로그인이 성공했을 경우입니다.
+                        // 로그인이 성공했을 경우입니다. 이것은 클라이언트에서 업데이트 서버와 연결할 준비를 한다는 것과 같습니다.
                         if(connectionNumber == ServerProperty.RECEVIED_LOGIN_SUCCESS)
                         {
                             JsonObject jo2 = getFramework(jsonReceivedMessage, JsonObject.class);
@@ -141,7 +142,7 @@ public class ServerConnectionReceiver
                             else
                             {
                                 Player newPlayer = PlayerFramework.register(registerConnection.getId(), registerConnection.getNickname(), registerConnection.getPassword());
-                                GameServer.getConsoleSender().log(newPlayer.toString());
+                                GameServer.getConsoleSender().log("Generating about information: " + newPlayer.toString());
                                 JsonObject success = new JsonObject();
                                 success.addProperty("status", ServerProperty.REGISTER_SUCCESSED_ACCOUNT);
                                 success.addProperty("message", "회원가입에 성공하였습니다! 이제 로그인하시면 됩니다.\n아아디: " + newPlayer.getId());
@@ -149,7 +150,8 @@ public class ServerConnectionReceiver
                             }
                         }
 
-                        // 업데이트 서버에 파일 목록에 대한 요청을 받고 서버 내 업데이트 파일의 대한 정보를 보냄
+                        // 클라이언트에서 파일 목록을 요청받고 서버 내 업데이트 파일의 대한 정보를 보냅니다.
+                        // 이때, UpdateConnectionReceiver로 보내어 업데이트 포트로 정보를 보냅니다.
                         if(connectionNumber == ServerProperty.SEND_UPDATE_REQURST)
                         {
                             Gson gsonSerialize = new Gson();
@@ -157,15 +159,25 @@ public class ServerConnectionReceiver
 
                             object.addProperty("status", ServerProperty.SEND_UPDATE_REQURST_RECEIVED);
                             object.addProperty("data", SystemUtil.Companion.fixHashMap(gsonSerialize.toJson(Update.getUpdateFiles()).toString()));
-                            out.writeUTF(object.toString());
-
+                            UpdateConnectionReceiver.getOutputStream().writeUTF(object.toString());
                         }
 
-                        // 작동에 필요한 파일 목록을 가져오고 Update server socket을 열어달라는 요청을 보냅니다.
+
+                        /*
+                        // 클라이언트에서 필요한 파일 목록을 가져오고 Update server socket을 열어달라는 요청을 보냅니다.
                         if(connectionNumber == ServerProperty.SEND_UPDATE_FILE_REQUEST)
                         {
                             String path = jo.get("path").getAsString();
                             Platform.runLater(() -> UpdateSender.start(jo.get("ipAddress").toString(), 8888, path));
+                            UpdateConnectionReceiver.getOutputStream().writeUTF(object.toString());
+                        }
+                        */
+
+                        // 업데이트가 모두 끝나고 게임 서버에 연결합니다.
+                        if(connectionNumber == ServerProperty.CONNECT_GAME_SERVER)
+                        {
+                            String id = jo.get("id").getAsString();
+                            Player player = GameServer.getPlayer(id);
                         }
                     }
                     catch(Exception e)

@@ -83,31 +83,31 @@ class FileSender extends Task<Void>
     {
         try
         {
-                File f = new File("update/" + Update.getUpdateFiles().get(filename));
-                if(!f.exists())
-                {
-                    GameServer.getConsoleSender().sendMessage(f.getName() + " doesn't exist file. skipping", MessageType.WARNING);
-                    return null;
-                }
-                fis    = new FileInputStream(f);
-                bis    = new BufferedInputStream(fis);
+            File f = new File("update/" + Update.getUpdateFiles().get(filename));
+            if(!f.exists())
+            {
+                GameServer.getConsoleSender().sendMessage(f.getName() + " doesn't exist file. skipping", MessageType.WARNING);
+                return null;
+            }
+            fis    = new FileInputStream(f);
+            bis    = new BufferedInputStream(fis);
 
-                int len;
-                int size = 4096;
-                byte[] data = new byte[size];
-                GameServer.getConsoleSender().sendMessage("Sending the file data: update/" + Update.getUpdateFiles().get(filename));
-                while ((len = bis.read(data)) != -1)
-                {
-                    dos.write(data, 0, len);
-                }
+            int len;
+            int size = 4096;
+            byte[] data = new byte[size];
+            GameServer.getConsoleSender().sendMessage("Sending the file data: update/" + Update.getUpdateFiles().get(filename));
+            while ((len = bis.read(data)) != -1)
+            {
+                dos.write(data, 0, len);
+            }
 
             GameServer.getConsoleSender().sendMessage("File updating was complete from " + Update.getUpdateFiles().get(filename) + " " + socket.getInetAddress().getHostAddress()
                     + ":" + socket.getPort());
 
-                dos.flush();
-                dos.close();
-                bis.close();
-                fis.close();
+            dos.flush();
+            dos.close();
+            bis.close();
+            fis.close();
         }
         catch (IOException e)
         {

@@ -47,7 +47,7 @@ public final class Update
                 {
                     e.printStackTrace();
                 }
-                updateFiles.put(sha256, new File(file.getPath() .split("/")[1]));
+                updateFiles.put(sha256, new File(file.getPath() .split("\\\\")[1]));
                 sendTo(label, "register update files from " + sha256);
             }
             try

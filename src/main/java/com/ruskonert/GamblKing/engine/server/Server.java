@@ -2,7 +2,7 @@ package com.ruskonert.GamblKing.engine.server;
 
 import com.ruskonert.GamblKing.engine.connect.BindConnection;
 import com.ruskonert.GamblKing.engine.entity.OfflinePlayer;
-import com.ruskonert.GamblKing.engine.entity.Player;
+import com.ruskonert.GamblKing.entity.Player;
 
 import java.io.File;
 import java.text.SimpleDateFormat;

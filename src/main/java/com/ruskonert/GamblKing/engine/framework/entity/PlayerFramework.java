@@ -3,8 +3,7 @@ package com.ruskonert.GamblKing.engine.framework.entity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ruskonert.GamblKing.engine.GameServer;
-import com.ruskonert.GamblKing.engine.entity.MessageDispatcher;
-import com.ruskonert.GamblKing.engine.entity.Player;
+import com.ruskonert.GamblKing.entity.Player;
 import com.ruskonert.GamblKing.util.SecurityUtil;
 
 import java.io.BufferedWriter;
@@ -13,7 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.InetAddress;
 
-public class PlayerFramework implements Player, MessageDispatcher
+public class PlayerFramework implements Player
 {
     private String id;
     @Override public String getId() { return this.id; }
@@ -27,8 +26,8 @@ public class PlayerFramework implements Player, MessageDispatcher
     private void setPassword(String password) { this.password = SecurityUtil.Companion.sha256(password); }
     @Override public String getPassword() { return this.password; }
 
-    private String lastMessage;
-    @Override public String getLastMessage() { return this.lastMessage; }
+    private String lastConnectTime;
+    @Override public String getLastMessage() { return this.lastConnectTime; }
 
     @Override
     public InetAddress getInetAddress() {
@@ -57,12 +56,17 @@ public class PlayerFramework implements Player, MessageDispatcher
         File playerFile = new File(dataFolder, "/player/" + framework.getId() + ".json");
         try
         {
+            File playerFolder = new File(dataFolder, "/player");
+            if(! playerFolder.exists()) playerFolder.mkdir();
             if(playerFile.createNewFile())
             {
-                GameServer.getConsoleSender().log(framework.getNickname() + " was created.");
+                GameServer.getConsoleSender().log("The user id: " + framework.getNickname() + " was created.");
+            }
+            else
+            {
+                GameServer.getConsoleSender().log(framework.getNickname() + " was failed creating. Please check your directory.");
             }
             BufferedWriter writer = new BufferedWriter(new FileWriter(playerFile));
-
             writer.append(jsonMessage);
             writer.flush();
             writer.close();

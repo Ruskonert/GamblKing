@@ -43,7 +43,7 @@ public class ConsoleSenderFramework extends TargetBuilder<ConsoleSenderFramework
 
     @Override public final void sendRawMessage(String message) { this.messageProperty.setValue(this.messageProperty.getValue() + message + "\n"); }
 
-    @Override public void sendMessage(String message, MessageType type)
+    @Override public synchronized void sendMessage(String message, MessageType type)
     {
         SimpleDateFormat sdf = this.getServer().getDateFormat();
         StringBuilder builder = new StringBuilder();
