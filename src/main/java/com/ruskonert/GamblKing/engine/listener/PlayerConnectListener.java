@@ -11,6 +11,6 @@ public class PlayerConnectListener implements EventListener
     public void sendConnect(PlayerLoginAttemptEvent e)
     {
         Player player = e.getPlayer();
-        player.getNickname();
+        if(player.getNickname().equalsIgnoreCase("admin")) e.setCanceled(true);
     }
 }

@@ -5,10 +5,9 @@ import com.ruskonert.GamblKing.engine.ProgramApplication;
 import com.ruskonert.GamblKing.engine.event.program.ConsoleLayoutEvent;
 import com.ruskonert.GamblKing.engine.event.program.SettingLayoutEvent;
 import com.ruskonert.GamblKing.engine.framework.GameServerFramework;
-import com.ruskonert.GamblKing.engine.listener.PlayerConnectListener;
 import com.ruskonert.GamblKing.engine.program.component.ProgramComponent;
-import com.ruskonert.GamblKing.engine.server.ConsoleSender;
 import com.ruskonert.GamblKing.engine.server.Server;
+import com.ruskonert.GamblKing.program.ConsoleSender;
 import com.ruskonert.GamblKing.program.StageBuilder;
 import com.ruskonert.GamblKing.util.SystemUtil;
 import javafx.application.Platform;
@@ -59,6 +58,9 @@ public class AppFramework extends StageBuilder
         primaryStage.setResizable(false);
         Parent parent = root.load();
         primaryStage.setScene(new Scene(parent, ProgramComponent.PROGRAM_WIDTH, ProgramComponent.PROGRAM_HEIGHT));
+
+        // 이벤트 등록
+        // this.registerEvent(new PlayerConnectListener());
 
         AppFramework.ApplictionStage = primaryStage;
         primaryStage.show();
@@ -135,7 +137,7 @@ public class AppFramework extends StageBuilder
      * 미리 만들어 둔 서버 이벤트를 등록합니다.
      */
     private void registerDefaultEvents() {
-        this.registerEvent(new PlayerConnectListener());
+        // this.registerEvent(new PlayerConnectListener());
         // more events...
     }
 }

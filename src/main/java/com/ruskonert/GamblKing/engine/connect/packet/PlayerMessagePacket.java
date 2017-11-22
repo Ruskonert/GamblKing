@@ -17,7 +17,6 @@ public class PlayerMessagePacket extends ServerPacket
     {
         super(ConnectionBackground.getPlayerOutputStream(GameServer.getPlayer(playerId)), 1100);
         this.message = message;
-        this.getJsonSerializers().put(Player.class, new PlayerAdapter());
     }
 
     @Override

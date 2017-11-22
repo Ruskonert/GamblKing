@@ -1,10 +1,10 @@
 package com.ruskonert.GamblKing.engine.framework;
 
+import com.ruskonert.GamblKing.MessageType;
 import com.ruskonert.GamblKing.engine.assembly.TargetReference;
 import com.ruskonert.GamblKing.engine.assembly.TargetBuilder;
 import com.ruskonert.GamblKing.engine.connect.ConnectionBackground;
-import com.ruskonert.GamblKing.engine.server.ConsoleSender;
-import com.ruskonert.GamblKing.engine.MessageType;
+import com.ruskonert.GamblKing.program.ConsoleSender;
 import com.ruskonert.GamblKing.engine.server.Server;
 import com.ruskonert.GamblKing.entity.Player;
 

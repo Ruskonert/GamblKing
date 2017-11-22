@@ -2,7 +2,7 @@ package com.ruskonert.GamblKing.engine;
 
 import com.ruskonert.GamblKing.engine.entity.OfflinePlayer;
 import com.ruskonert.GamblKing.engine.server.Channel;
-import com.ruskonert.GamblKing.engine.server.ConsoleSender;
+import com.ruskonert.GamblKing.program.ConsoleSender;
 import com.ruskonert.GamblKing.engine.server.Server;
 import com.ruskonert.GamblKing.engine.program.AppFramework;
 import com.ruskonert.GamblKing.entity.Player;

@@ -6,7 +6,7 @@ import java.io.DataOutputStream;
 
 public abstract class ServerPacket extends Packet
 {
-    private DataOutputStream out;
+    private transient DataOutputStream out;
 
     public ServerPacket(DataOutputStream out, int statusNumber)
     {

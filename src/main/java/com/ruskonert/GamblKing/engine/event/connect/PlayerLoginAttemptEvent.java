@@ -1,7 +1,7 @@
 package com.ruskonert.GamblKing.engine.event.connect;
 
-import com.ruskonert.GamblKing.engine.event.Event;
 import com.ruskonert.GamblKing.entity.Player;
+import com.ruskonert.GamblKing.event.Event;
 
 public class PlayerLoginAttemptEvent extends Event
 {

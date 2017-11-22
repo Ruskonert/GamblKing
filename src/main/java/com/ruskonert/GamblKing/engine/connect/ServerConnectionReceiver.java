@@ -3,10 +3,10 @@ package com.ruskonert.GamblKing.engine.connect;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import com.ruskonert.GamblKing.MessageType;
 import com.ruskonert.GamblKing.connect.packet.LoginConnectionPacket;
 import com.ruskonert.GamblKing.connect.packet.RegisterConnectionPacket;
 import com.ruskonert.GamblKing.engine.GameServer;
-import com.ruskonert.GamblKing.engine.MessageType;
 import com.ruskonert.GamblKing.engine.framework.entity.PlayerFramework;
 import com.ruskonert.GamblKing.entity.Player;
 import com.ruskonert.GamblKing.property.ServerProperty;

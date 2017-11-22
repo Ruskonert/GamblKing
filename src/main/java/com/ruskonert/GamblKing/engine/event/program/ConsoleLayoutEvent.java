@@ -1,13 +1,12 @@
 package com.ruskonert.GamblKing.engine.event.program;
 
+import com.ruskonert.GamblKing.MessageType;
 import com.ruskonert.GamblKing.engine.GameServer;
 import com.ruskonert.GamblKing.event.LayoutListener;
-
-import com.ruskonert.GamblKing.engine.MessageType;
 import com.ruskonert.GamblKing.engine.program.AppFramework;
 import com.ruskonert.GamblKing.engine.program.ProgramManager;
 import com.ruskonert.GamblKing.engine.program.component.ProgramComponent;
-import com.ruskonert.GamblKing.engine.server.ConsoleSender;
+import com.ruskonert.GamblKing.program.ConsoleSender;
 import com.ruskonert.GamblKing.util.ReflectionUtil;
 
 import javafx.application.Platform;
@@ -81,6 +80,7 @@ public class ConsoleLayoutEvent implements LayoutListener
                     sender.dispatch(message);
                 } else {
                     sender.sendMessage(message);
+                    sender.sendAll(message);
                 }
             }
         });
