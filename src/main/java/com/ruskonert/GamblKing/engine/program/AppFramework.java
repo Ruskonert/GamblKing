@@ -1,6 +1,7 @@
 package com.ruskonert.GamblKing.engine.program;
 
 import com.ruskonert.GamblKing.engine.GameServer;
+import com.ruskonert.GamblKing.engine.ProgramApplication;
 import com.ruskonert.GamblKing.engine.event.program.ConsoleLayoutEvent;
 import com.ruskonert.GamblKing.engine.event.program.SettingLayoutEvent;
 import com.ruskonert.GamblKing.engine.framework.GameServerFramework;
@@ -10,15 +11,11 @@ import com.ruskonert.GamblKing.engine.server.ConsoleSender;
 import com.ruskonert.GamblKing.engine.server.Server;
 import com.ruskonert.GamblKing.program.StageBuilder;
 import com.ruskonert.GamblKing.util.SystemUtil;
-import com.ruskonert.GamblKing.engine.ProgramApplication;
-
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.File;
 
 /**
  * 어플리케이션을 자동으로 설계하고 각종 프레임워크를 작성하여 서버가 작동할 수 있도록 합니다.<br>

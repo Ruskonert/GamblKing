@@ -19,8 +19,11 @@ import java.util.List;
  * <code>
  * public void subClass extends TargetBuilder<subClass>
  * {
+ *     &#064;TypeReference
+ *     private Label referLabel;
+ *
  *     ...
- *     @Override
+ *     &#064;Override
  *     public Object onInit(Object handleInstance)
  *     {
  *         super.onInit(this);
@@ -31,6 +34,11 @@ import java.util.List;
  * }
  * </code>
  * </pre>
+ * 또한, {@link TargetReference}를 통해 외부에서 정의된 레이아웃
+ * 속성 또는 객체의 값을 가져올 수 있습니다. {@link com.ruskonert.GamblKing.engine.framework.ConsoleSenderFramework}는
+ * {@link TargetReference}를 활용하여 외부 레이아웃 속성 값을
+ * 가져오는 대표적인 예제 소스입니다.
+ * @see com.ruskonert.GamblKing.engine.framework.ConsoleSenderFramework
  * @param <E> 서브 클래스의 타입
  * @author Ruskonert (Junwon Kim)
  */

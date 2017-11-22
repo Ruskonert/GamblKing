@@ -56,6 +56,8 @@ public class ConsoleLayoutEvent implements LayoutListener
                 else
                 {
                     sender.sendMessage(fieldText);
+                    sender.sendAll(fieldText);
+
                 }
             }
         });

@@ -47,7 +47,10 @@ public final class Update
                 {
                     e.printStackTrace();
                 }
-                updateFiles.put(sha256, new File(file.getPath() .split("\\\\")[1]));
+                if(System.getProperty("os.name").equalsIgnoreCase("Mac OS X"))
+                    updateFiles.put(sha256, new File(file.getPath().split("/")[1]));
+                else
+                    updateFiles.put(sha256, new File(file.getPath().split("\\\\")[1]));
                 sendTo(label, "register update files from " + sha256);
             }
             try

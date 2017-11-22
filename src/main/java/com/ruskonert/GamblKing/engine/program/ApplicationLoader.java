@@ -2,7 +2,6 @@ package com.ruskonert.GamblKing.engine.program;
 
 import com.ruskonert.GamblKing.ProgramInitializable;
 import com.ruskonert.GamblKing.util.SystemUtil;
-
 import com.ruskonert.GamblKing.engine.connect.Update;
 import com.ruskonert.GamblKing.engine.ProgramApplication;
 import com.ruskonert.GamblKing.engine.program.component.ProgramComponent;
@@ -12,7 +11,6 @@ import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
-
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -75,8 +73,8 @@ public final class ApplicationLoader extends Application implements ProgramIniti
     }
 
 
-    private void onInit() {
-
+    private void onInit()
+    {
         File data = new File(System.getProperty("user.dir") + "/data");
         File update = new File(System.getProperty("user.dir") + "/update");
         if (!data.exists())

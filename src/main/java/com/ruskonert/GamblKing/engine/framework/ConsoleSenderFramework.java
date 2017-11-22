@@ -2,16 +2,17 @@ package com.ruskonert.GamblKing.engine.framework;
 
 import com.ruskonert.GamblKing.engine.assembly.TargetReference;
 import com.ruskonert.GamblKing.engine.assembly.TargetBuilder;
+import com.ruskonert.GamblKing.engine.connect.ConnectionBackground;
 import com.ruskonert.GamblKing.engine.server.ConsoleSender;
 import com.ruskonert.GamblKing.engine.MessageType;
 import com.ruskonert.GamblKing.engine.server.Server;
+import com.ruskonert.GamblKing.entity.Player;
 
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import org.jetbrains.annotations.NotNull;
-
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -85,6 +86,16 @@ public class ConsoleSenderFramework extends TargetBuilder<ConsoleSenderFramework
         else
         {
             this.sendMessage(message, MessageType.INFO);
+        }
+    }
+
+    @Override
+    public void sendAll(String message)
+    {
+        for(Player p : ConnectionBackground.getGameClientMap().keySet())
+        {
+            //if(! p.isEnteredRoom()) continue;
+            p.sendMessage(message);
         }
     }
 

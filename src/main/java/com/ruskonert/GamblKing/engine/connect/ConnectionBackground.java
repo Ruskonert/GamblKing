@@ -1,14 +1,13 @@
 package com.ruskonert.GamblKing.engine.connect;
 
-import com.ruskonert.GamblKing.connect.ClientReceiver;
 import com.ruskonert.GamblKing.engine.GameServer;
 import com.ruskonert.GamblKing.entity.Player;
 import com.ruskonert.GamblKing.property.ServerProperty;
 
 import javafx.concurrent.Task;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Collections;
@@ -24,14 +23,22 @@ public final class ConnectionBackground
     private ServerSocket updateServerSocket;
     private Socket updateSocket;
 
-    private static Map<InetAddress, DataOutputStream> clientMap = new HashMap<>();
-    public static Map<InetAddress, DataOutputStream> getClientMap() { return clientMap; }
+    private static Map<String, DataOutputStream> clientMap = new HashMap<>();
+    public static Map<String, DataOutputStream> getClientMap() { return clientMap; }
 
-    private static Map<Player, ClientReceiver> gameClientMap = new ConcurrentHashMap<>();
-    public static Map<Player, ClientReceiver> getGameClientMap() { return gameClientMap; }
+    private static Map<Player, Socket> gameClientMap = new ConcurrentHashMap<>();
+    public static Map<Player, Socket> getGameClientMap() { return gameClientMap; }
+    public static DataOutputStream getPlayerOutputStream(Player player) {
+        try {
+            return new DataOutputStream(gameClientMap.get(player).getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-    private static Map<InetAddress, DataOutputStream> updateClientMap = new HashMap<>();
-    public static Map<InetAddress, DataOutputStream> getUpdateClientMap() { return updateClientMap; }
+    private static Map<String, DataOutputStream> updateClientMap = new HashMap<>();
+    public static Map<String, DataOutputStream> getUpdateClientMap() { return updateClientMap; }
 
 
     public void initialize() throws IOException
@@ -57,7 +64,7 @@ public final class ConnectionBackground
                 catch (IOException e)
                 {
                     e.printStackTrace();
-                    GameServer.getServer().getConsoleSender().log("Server open failed: Port is closed or Server is already running");
+                    GameServer.getServer().getConsoleSender().log("Server open failed: Port is used another service or The Server was already running");
                 }
                 return null;
             }
@@ -86,10 +93,10 @@ public final class ConnectionBackground
                 catch (IOException e)
                 {
                     e.printStackTrace();
-                    GameServer.getServer().getConsoleSender().log("Server open failed: Port is closed or Update server is already running");
+                    GameServer.getServer().getConsoleSender().log("Server open failed: Port is used another service or The update server was already running");
                 }
                 return null;
-            };
+            }
         };
 
         Thread thread = new Thread(task);

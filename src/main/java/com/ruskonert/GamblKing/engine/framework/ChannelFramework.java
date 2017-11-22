@@ -6,6 +6,7 @@ public class ChannelFramework implements Channel
 {
     public ChannelFramework(String channelName)
     {
+
     }
 }
 

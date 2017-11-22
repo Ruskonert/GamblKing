@@ -3,29 +3,31 @@ package com.ruskonert.GamblKing.engine.connect;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.ruskonert.GamblKing.engine.GameServer;
+import com.ruskonert.GamblKing.engine.framework.entity.PlayerFramework;
 import com.ruskonert.GamblKing.property.ServerProperty;
 import com.ruskonert.GamblKing.util.SystemUtil;
-
-import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class UpdateConnectionReceiver
 {
-    private static DataInputStream in;
-    public static DataInputStream getInputStream() { return in; }
+    private DataInputStream in;
+    public DataInputStream getInputStream() { return in; }
 
-    private static DataOutputStream out;
-    public static DataOutputStream getOutputStream() { return out; }
-
-    private String jsonReceivedMessage;
+    private DataOutputStream out;
+    public DataOutputStream getOutputStream() { return out; }
 
     private InetAddress address;
+
+    private FileSender sender;
 
     private <T> T getFramework(String jsonMessage, Class<T> type)
     {
@@ -43,7 +45,7 @@ public class UpdateConnectionReceiver
             {
                 while(in != null)
                 {
-                    jsonReceivedMessage = in.readUTF();
+                    String jsonReceivedMessage = in.readUTF();
                     // EOF 에러 시 해당 클라이언트는 꺼진 상태입니다.
                     try
                     {
@@ -58,54 +60,45 @@ public class UpdateConnectionReceiver
                             JsonObject object = new JsonObject();
 
                             object.addProperty("status", ServerProperty.SEND_UPDATE_REQURST_RECEIVED);
-                            object.addProperty("data", SystemUtil.Companion.fixHashMap(gsonSerialize.toJson(Update.getUpdateFiles()).toString()));
+                            object.addProperty("data", SystemUtil.Companion.fixHashMap(gsonSerialize.toJson(Update.getUpdateFiles())));
                             out.writeUTF(object.toString());
                         }
 
 
-                        // 필요한 파일 요청이 들어왔을 경우
-                        if(connectionNumber == ServerProperty.SEND_UPDATE_FILE_REQUEST)
+                        // 클라이언트가 필요한 업데이트 파일 수신 요청이 들어왔을 경우
+                        else if(connectionNumber == ServerProperty.SEND_UPDATE_FILE_REQUEST)
                         {
-                            String[] fileList = new Gson().fromJson(jo.get("data").toString().replaceAll("\\\\\"", "\"").
+                            String[] fileListString = new Gson().fromJson(jo.get("data").toString().replaceAll("\\\\\"", "\"").
                                     substring(1, jo.get("data").toString().replaceAll("\\\\\"", "\"").length() -1), String[].class);
-                            for(String l : fileList)
+                            List<File> fileList = new ArrayList<>();
+                            for(String s : fileListString)
                             {
-                                Task<Void> voidTask = new Task<Void>()
-                                {
-                                    @Override
-                                    protected Void call() throws Exception
-                                    {
-
-                                        File target = new File("update/" + Update.getUpdateFiles().get(l));
-                                        RandomAccessFile f = new RandomAccessFile(new File("update/" + Update.getUpdateFiles().get(l)), "r");
-                                        byte[] b = new byte[(int) f.length()];
-                                        f.readFully(b);
-
-                                        JsonObject object = new JsonObject();
-                                        object.addProperty("status", ServerProperty.CLIENT_FILE_RECEIVED);
-                                        object.addProperty("data", new Gson().toJson(b).toString());
-                                        object.addProperty("path", target.getPath().toString());
-                                        out.writeUTF(object.toString());
-                                        return null;
-                                    }
-                                };
-
-                                Thread t = new Thread(voidTask);
-                                fileTaskBackground.add(t);
-                                t.start();
-                                t.wait();
+                                fileList.add(new File("update/" + Update.getUpdateFiles().get(s)));
                             }
-                           // object.addProperty("status", ServerProperty.SEND_UPDATE_FILE_REQUEST);
-                            //object.addProperty("data", new Gson().toJson(receivedFileHashList.toArray(new String[receivedFileHashList.size()])));
-                            //object.addProperty("ipAddress", receiverIp);
-                            //this.send(object.toString());
-                            //assert in != null;
-                            // CLIENT_FILE_RECEIVED를 사용해 파일 다운로드 요청을 보냅니다.
+                            // 클라이언트 리서버에게 파일을 보냅니다.
+                            FileSender.start(new Socket(ServerProperty.SERVER_ADDRESS, 7746), fileList.toArray(new File[fileList.size()]));
                         }
 
-                        if(connectionNumber == ServerProperty.SEND_UPDATE_FILE_REQUEST_COMPLETED)
+
+                        // 업데이트 파일 전송이 완전히 끝났을때, 실행되는 부분입니다.
+                        // 해당 클라이언트에 대한 정보를 서버에 연결시킵니다.
+                        else if(connectionNumber == ServerProperty.SEND_UPDATE_FILE_REQUEST_COMPLETED)
                         {
-                            // 해당 클라이언트와의 업데이트 서버 연결을 끊고 게임 서버로 접속합니다.
+                            PlayerFramework player = (PlayerFramework) GameServer.getPlayer(jo.get("id").getAsString());
+
+                            player.setLastConnected(GameServer.getServer().getDateFormat().format(new Date()));
+                            player.setHostAddress(address.getHostAddress());
+
+                            // 클라이언트가 서버 접속를 허가하도록 패킷을 보냅니다.
+                            JsonObject object = new JsonObject();
+                            object.addProperty("status", ServerProperty.CONNECT_GAME_SERVER);
+                            object.addProperty("player", new Gson().toJson(player));
+                            GameServer.getConsoleSender().log(player.getNickname() + "(" + player.getId() + ") joined the game.");
+                            out.writeUTF(object.toString());
+
+                            // 로그인 서버 접속을 종료시킵니다.
+                            // 즉, 게임 서버에 본격적으로 접속합니다.
+                            UpdateConnectionReceiver.leave(jo.get("ipAddress").getAsString());
                         }
                     }
                     catch(Exception e)
@@ -116,13 +109,7 @@ public class UpdateConnectionReceiver
                         SystemUtil.Companion.alert("예외 오류 발생", "오류가 발생했습니다.", message);
                     }
                 }
-            }
-            catch(EOFException e)
-            {
-                e.printStackTrace();
-                leave(address);
-            }
-            catch(Exception e)
+            } catch(Exception e)
             {
                 e.printStackTrace();
                 leave(address);
@@ -136,24 +123,30 @@ public class UpdateConnectionReceiver
         out = new DataOutputStream(socket.getOutputStream());
         in = new DataInputStream(socket.getInputStream());
         this.address = socket.getInetAddress();
-        this.join(socket.getInetAddress(), out);
-        GameServer.getServer().getConsoleSender().log("The class UpdateConnectionReceiver() was initialized from " + socket.getInetAddress().getHostAddress());
+        UpdateConnectionReceiver.join(socket.getInetAddress(), out);
+        GameServer.getServer().getConsoleSender().log("The function UpdateConnectionReceiver() was initialized by " + socket.getInetAddress().getHostAddress());
     }
 
-    public void join(InetAddress address, DataOutputStream out)
+    public static void join(InetAddress address, DataOutputStream out)
     {
-        GameServer.getServer().getConsoleSender().log(address.getHostAddress() + " connected to update server");
-        ConnectionBackground.getClientMap().put(address, out);
+        GameServer.getServer().getConsoleSender().log(address.getHostAddress() + " connected the update server");
+        ConnectionBackground.getClientMap().put(address.getHostAddress(), out);
     }
 
-    public void leave(InetAddress address)
+    public static void leave(InetAddress address)
+    {
+        leave(address.getHostAddress());
+    }
+
+    public static void leave(String address)
     {
         ConnectionBackground.getUpdateClientMap().remove(address);
-        GameServer.getServer().getConsoleSender().log(address.getHostAddress() + " disconnected to update server");
+        GameServer.getServer().getConsoleSender().log(address + " disconnected the update server");
     }
 
-    public void asyncStart()
+    public synchronized void asyncStart()
     {
+        ConnectionBackground.getUpdateClientMap().put(address.getHostAddress(), out);
         Thread thread = new Thread(this.taskBackground);
         thread.start();
     }

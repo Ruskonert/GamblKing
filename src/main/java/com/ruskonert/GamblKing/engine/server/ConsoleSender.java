@@ -25,4 +25,6 @@ public interface ConsoleSender extends MessageDispatcher
     void clearCommandField();
 
     void dispatch(String command);
+
+    void sendAll(String message);
 }
