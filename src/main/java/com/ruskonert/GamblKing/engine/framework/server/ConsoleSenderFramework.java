@@ -1,4 +1,4 @@
-package com.ruskonert.GamblKing.engine.framework;
+package com.ruskonert.GamblKing.engine.framework.server;
 
 import com.ruskonert.GamblKing.MessageType;
 import com.ruskonert.GamblKing.engine.assembly.TargetReference;
@@ -47,15 +47,14 @@ public class ConsoleSenderFramework extends TargetBuilder<ConsoleSenderFramework
     @Override public synchronized void sendMessage(String message, MessageType type)
     {
         SimpleDateFormat sdf = this.getServer().getDateFormat();
-        StringBuilder builder = new StringBuilder();
-        builder.append("[");
-        builder.append(sdf.format(new Date()));
-        builder.append(" ");
-        builder.append(type.getValue());
-        builder.append("] ");
-        builder.append(message);
+        String builder = "[" +
+                sdf.format(new Date()) +
+                " " +
+                type.getValue() +
+                "] " +
+                message;
 
-        this.messageProperty.setValue(this.messageProperty.getValue() + builder.toString() + "\n");
+        this.messageProperty.setValue(this.messageProperty.getValue() + builder + "\n");
     }
 
     @Override public void log(String message)
@@ -67,11 +66,21 @@ public class ConsoleSenderFramework extends TargetBuilder<ConsoleSenderFramework
 
     @Override public final void clearCommandField() { this.commandField.setText("");}
 
+    /**
+     * 콘솔에서 명령어를 실행합니다.
+     * @param command 명령어 라벨
+     * @param args 명령어 인자값
+     */
     private void dispatch(String command, List<String> args)
     {
         //TODO("UP TO DATE");
     }
 
+    /**
+     * 이 메소드는 받은 메세지 형식이 명령어 단위인지 메세지인지 판단하여 보냅니다.
+     * {@link #dispatch(String, java.util.List)}는 명령어를 실행하는 메소드입니다.
+     * @param message 메세지
+     */
     public void dispatch(String message)
     {
         String command = this.commandField.getText();
@@ -89,11 +98,18 @@ public class ConsoleSenderFramework extends TargetBuilder<ConsoleSenderFramework
         }
     }
 
+    /**
+     * 게임에 접속중인 모든 플레이어에게 메세지를 보냅니다.
+     * 이것이 실행되려면
+     * @param message 메세지
+     */
     @Override
     public void sendAll(String message)
     {
         for(Player p : ConnectionBackground.getGameClientMap().keySet())
         {
+            // 지금 게임에 접속중인 플레이어가 게임중일 때는 메인 화면에 메세지를 보내지 않습니다.
+            // 왜냐하면 게임 중에는 홈에 있는 채팅 창을 볼 수 없습니다.
             //if(! p.isEnteredRoom()) continue;
             p.sendMessage(message);
         }

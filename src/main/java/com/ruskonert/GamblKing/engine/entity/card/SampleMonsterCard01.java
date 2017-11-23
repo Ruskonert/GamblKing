@@ -1,6 +1,6 @@
 package com.ruskonert.GamblKing.engine.entity.card;
 
-import com.ruskonert.GamblKing.engine.entity.card.framework.MonsterCard;
+import com.ruskonert.GamblKing.engine.framework.entity.card.MonsterCard;
 
 public class SampleMonsterCard01 extends MonsterCard
 {

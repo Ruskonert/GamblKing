@@ -1,14 +1,14 @@
 package com.ruskonert.GamblKing.engine.connect;
 
+import com.ruskonert.GamblKing.connect.packet.RoomRefreshPacket;
 import com.ruskonert.GamblKing.engine.GameServer;
 import com.ruskonert.GamblKing.entity.Player;
+import com.ruskonert.GamblKing.entity.Room;
 import com.ruskonert.GamblKing.property.ServerProperty;
 
 import javafx.concurrent.Task;
-
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Collections;
@@ -27,6 +27,7 @@ public final class ConnectionBackground
     private static Map<String, DataOutputStream> clientMap = new HashMap<>();
     public static Map<String, DataOutputStream> getClientMap() { return clientMap; }
 
+    // 게임 클라이언트 리시버러를 Player별로 나눕니다.
     private static Map<Player, Socket> gameClientMap = new ConcurrentHashMap<>();
     public static Map<Player, Socket> getGameClientMap() { return gameClientMap; }
     public static DataOutputStream getPlayerOutputStream(Player player) {
@@ -38,8 +39,28 @@ public final class ConnectionBackground
         return null;
     }
 
+    // 클라이언트 리시버를 IP 별로 나눕니다.
     private static Map<String, DataOutputStream> updateClientMap = new HashMap<>();
     public static Map<String, DataOutputStream> getUpdateClientMap() { return updateClientMap; }
+
+
+    // 게임 방과 관련한 쓰레드 작업을 돌립니다.
+    private static Thread roomThread;
+    public static Thread getRoomThread() { return ConnectionBackground.roomThread; }
+
+    private static Map<Player, Room> roomMap = new ConcurrentHashMap<>();
+    public static Map<Player, Room> getRoomMap() { return roomMap; }
+
+
+    public static void refreshRoom(Player target)
+    {
+        RoomRefreshPacket packet = new RoomRefreshPacket(roomMap.values().toArray(new Room[roomMap.size()]));
+        try {
+            packet.send(getGameClientMap().get(target).getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     public void initialize() throws IOException
@@ -100,11 +121,32 @@ public final class ConnectionBackground
             }
         };
 
+        Task<Void> roomTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception
+            {
+                while(true)
+                {
+                    for (Player p : ConnectionBackground.getGameClientMap().keySet()) {
+                        ConnectionBackground.refreshRoom(p);
+                    }
+                    Thread.sleep(3000L);
+                    return null;
+                }
+            }
+        };
+
+
         Thread thread = new Thread(task);
         thread.start();
 
         Thread updateThread = new Thread(updateTask);
         updateThread.start();
+
+        Thread rThread = new Thread(roomTask);
+        ConnectionBackground.roomThread = rThread;
+
+        rThread.start();
 
     }
 

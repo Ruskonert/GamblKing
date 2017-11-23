@@ -1,4 +1,4 @@
-package com.ruskonert.GamblKing.engine.entity.card.framework;
+package com.ruskonert.GamblKing.engine.framework.entity.card;
 
 import com.ruskonert.GamblKing.engine.entity.card.component.ActivateCost;
 import static com.ruskonert.GamblKing.engine.entity.card.component.ActivateCost.NONE;
@@ -33,5 +33,5 @@ public abstract class TrapCard extends CardFramework
 
     private Map<Map.Entry<ActivateCost, Effect>, Object[]> effects;
     public Map<Map.Entry<ActivateCost, Effect>, Object[]> getEffects() { return null;}
-    public void addEffect(Object... args) { }
+    public void addEffect(Object... args) { /* Complied code */ }
 }

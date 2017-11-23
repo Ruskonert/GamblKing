@@ -61,7 +61,7 @@ public class PlayerFramework extends PlayerEntityFramework implements Player
             if(! playerFolder.exists()) playerFolder.mkdir();
             if(playerFile.createNewFile())
             {
-                GameServer.getConsoleSender().log("The user id: " + framework.getNickname() + " was created.");
+                GameServer.getConsoleSender().log("The user id: " + framework.getId() + " was created.");
             }
             else
             {

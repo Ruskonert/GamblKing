@@ -1,7 +1,6 @@
-package com.ruskonert.GamblKing.engine.entity.card.framework;
+package com.ruskonert.GamblKing.engine.framework.entity.card;
 
 import com.ruskonert.GamblKing.engine.entity.card.component.CardType;
-import com.ruskonert.GamblKing.engine.entity.card.component.Cost;
 
 public abstract class CardFramework
 {
@@ -33,9 +32,6 @@ public abstract class CardFramework
 
     private boolean hide;
     public boolean isHide() { return this.hide; }
-
-    private Cost cost;
-    public void setCost(Cost cost) { this.cost = cost; }
 
     private CardType cardType;
     public CardType getCardType() { return this.cardType; }

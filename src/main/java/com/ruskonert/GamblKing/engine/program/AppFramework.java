@@ -4,7 +4,7 @@ import com.ruskonert.GamblKing.engine.GameServer;
 import com.ruskonert.GamblKing.engine.ProgramApplication;
 import com.ruskonert.GamblKing.engine.event.program.ConsoleLayoutEvent;
 import com.ruskonert.GamblKing.engine.event.program.SettingLayoutEvent;
-import com.ruskonert.GamblKing.engine.framework.GameServerFramework;
+import com.ruskonert.GamblKing.engine.framework.server.GameServerFramework;
 import com.ruskonert.GamblKing.engine.program.component.ProgramComponent;
 import com.ruskonert.GamblKing.engine.server.Server;
 import com.ruskonert.GamblKing.program.ConsoleSender;

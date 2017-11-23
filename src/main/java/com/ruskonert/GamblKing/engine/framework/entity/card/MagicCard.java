@@ -1,4 +1,4 @@
-package com.ruskonert.GamblKing.engine.entity.card.framework;
+package com.ruskonert.GamblKing.engine.framework.entity.card;
 
 import com.ruskonert.GamblKing.engine.entity.card.component.ActivateCost;
 import com.ruskonert.GamblKing.engine.entity.card.component.CardType;

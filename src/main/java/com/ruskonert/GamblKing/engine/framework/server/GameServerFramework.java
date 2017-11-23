@@ -1,10 +1,11 @@
-package com.ruskonert.GamblKing.engine.framework;
+package com.ruskonert.GamblKing.engine.framework.server;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ruskonert.GamblKing.engine.GameServer;
 import com.ruskonert.GamblKing.engine.connect.BindConnection;
 import com.ruskonert.GamblKing.engine.entity.OfflinePlayer;
+import com.ruskonert.GamblKing.engine.framework.ChannelFramework;
 import com.ruskonert.GamblKing.engine.framework.entity.PlayerFramework;
 import com.ruskonert.GamblKing.engine.server.Channel;
 import com.ruskonert.GamblKing.program.ConsoleSender;

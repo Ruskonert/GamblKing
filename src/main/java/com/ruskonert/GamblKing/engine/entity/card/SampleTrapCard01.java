@@ -3,7 +3,7 @@ package com.ruskonert.GamblKing.engine.entity.card;
 import com.ruskonert.GamblKing.engine.entity.card.component.ActivateCost;
 import com.ruskonert.GamblKing.engine.entity.card.component.Effect;
 import com.ruskonert.GamblKing.engine.entity.card.component.Targeting;
-import com.ruskonert.GamblKing.engine.entity.card.framework.TrapCard;
+import com.ruskonert.GamblKing.engine.framework.entity.card.TrapCard;
 
 public class SampleTrapCard01 extends TrapCard
 {

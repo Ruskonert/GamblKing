@@ -54,8 +54,8 @@ public class ConsoleLayoutEvent implements LayoutListener
                 }
                 else
                 {
-                    sender.sendMessage(fieldText);
-                    sender.sendAll(fieldText);
+                    sender.sendMessage("Server: " + fieldText);
+                    sender.sendAll("Server: " + fieldText);
 
                 }
             }
@@ -79,8 +79,8 @@ public class ConsoleLayoutEvent implements LayoutListener
                 if (message.startsWith("/")) {
                     sender.dispatch(message);
                 } else {
-                    sender.sendMessage(message);
-                    sender.sendAll(message);
+                    sender.sendMessage("Server: " + message);
+                    sender.sendAll("Server: " + message);
                 }
             }
         });

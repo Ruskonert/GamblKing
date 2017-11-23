@@ -15,5 +15,15 @@ public enum ActivateCost
     END_PAGE,
 
     // 발동 조건이 없습니다. 필드에 내놓는 순간 즉각 발동됩니다. 이것은 마법 카드에서만 사용이 가능합니다.
-    NONE
+    NONE,
+
+    CARD_DESTORYED,
+    CARD_GOTO_USED,
+    MONSTER_SUMMONED,
+    SPECIAL_CARD_ACTIVATED,
+    TRAP_CARD_ACTIVATED,
+    MAGIC_CARD_ACTIVATED,
+    PLYER_ATTACK,
+    PLAYER_DAMAGERD,
+    ANOTHER_PLAYER_DAMAGED
 }

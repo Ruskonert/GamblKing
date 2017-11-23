@@ -3,6 +3,7 @@ package com.ruskonert.GamblKing.engine.connect.packet;
 import com.ruskonert.GamblKing.connect.Packet;
 
 import java.io.DataOutputStream;
+import java.net.SocketException;
 
 public abstract class ServerPacket extends Packet
 {

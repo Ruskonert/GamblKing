@@ -1,21 +1,28 @@
 package com.ruskonert.GamblKing.engine.connect;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-
-import com.ruskonert.GamblKing.MessageType;
-import com.ruskonert.GamblKing.connect.packet.LoginConnectionPacket;
-import com.ruskonert.GamblKing.connect.packet.RegisterConnectionPacket;
 import com.ruskonert.GamblKing.engine.GameServer;
 import com.ruskonert.GamblKing.engine.framework.entity.PlayerFramework;
+import com.ruskonert.GamblKing.MessageType;
+import com.ruskonert.GamblKing.adapter.PlayerAdapter;
+import com.ruskonert.GamblKing.connect.packet.LoginConnectionPacket;
+import com.ruskonert.GamblKing.connect.packet.RegisterConnectionPacket;
 import com.ruskonert.GamblKing.entity.Player;
+import com.ruskonert.GamblKing.framework.RoomFramework;
 import com.ruskonert.GamblKing.property.ServerProperty;
 import com.ruskonert.GamblKing.util.SecurityUtil;
 import com.ruskonert.GamblKing.util.SystemUtil;
-
 import javafx.concurrent.Task;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Date;
@@ -51,7 +58,6 @@ public class ServerConnectionReceiver
 
     public static void leave(InetAddress address)
     {
-
         leave(address.getHostAddress());
     }
 
@@ -74,6 +80,9 @@ public class ServerConnectionReceiver
     }
 
 
+    /**
+     * 로그인이나 회원가입 관련 패킷을 보낼때 정규화된 방식로 보내줍니다.
+     */
     private void sendRegisterSocket(int status, String message)
     {
         JsonObject jsonObject = new JsonObject();
@@ -104,10 +113,15 @@ public class ServerConnectionReceiver
                         // 요청받은 메세지를 JsonObject로 가져옵니다.
                         JsonObject jo = getFramework(jsonReceivedMessage, JsonObject.class);
                         int connectionNumber = jo.get("status").getAsInt();
+
+                        // 로그인을 요청합니다.
                         if(connectionNumber == ServerProperty.REQUEST_LOGIN)
                         {
+                            // REQUEST LOGIN은 포맷 스트림의 문제로 String 단위가 아니라 Packet 단위로 통째로 변환되었습니다.
+                            // 이 패킷에만 해당됩니다.
                             LoginConnectionPacket loginConnection = getFramework(jsonReceivedMessage, LoginConnectionPacket.class);
                             String id = loginConnection.getId();
+
                             GameServer.getServer().getConsoleSender().log("Received the requesting: REQUEST_LOGIN_SIGNAL=[" + id + "]:" + address.getHostName());
                             if(new File("data/player/" + id + ".json").exists())
                             {
@@ -146,8 +160,7 @@ public class ServerConnectionReceiver
                                 JsonObject error = new JsonObject();
                                 error.addProperty("status",ServerProperty.REGISTER_FAILED_ACCOUNT);
                                 error.addProperty("message","해당 아이디는 이미 가입되어 있습니다.");
-                                out.writeUTF(error.toString());
-                                continue;
+                                send(error.toString());
                             }
                             else
                             {
@@ -156,7 +169,7 @@ public class ServerConnectionReceiver
                                 JsonObject success = new JsonObject();
                                 success.addProperty("status", ServerProperty.REGISTER_SUCCESSED_ACCOUNT);
                                 success.addProperty("message", "회원가입에 성공하였습니다! 이제 로그인하시면 됩니다.\n아아디: " + newPlayer.getId());
-                                out.writeUTF(success.toString());
+                                send(success.toString());
                             }
                         }
 
@@ -170,6 +183,7 @@ public class ServerConnectionReceiver
                             object.addProperty("status", ServerProperty.SEND_UPDATE_REQURST_RECEIVED);
                             object.addProperty("data", SystemUtil.Companion.fixHashMap(gsonSerialize.toJson(Update.getUpdateFiles())));
 
+                            // UpdateConnectionReceiver에게 보내줍니다.
                             DataOutputStream dos = ConnectionBackground.getUpdateClientMap().get(address.getHostAddress());
                             dos.writeUTF(object.toString());
                         }
@@ -188,17 +202,19 @@ public class ServerConnectionReceiver
                             JsonObject object = new JsonObject();
                             object.addProperty("status", ServerProperty.SERVER_TIME_REQUEST);
                             object.addProperty("time", GameServer.getServer().getDateFormat().format(new Date()));
-                            out.writeUTF(object.toString());
+                            send(object.toString());
                         }
 
                         // 어떤 클라이언트가 채팅 시스템을 이용해 메세지를 보낸 상태입니다.
-                        // 그 메세지를 모두에게 보여줘야 합니다.
+                        // 그 보낸 메세지를 모두에게 보여줘야 합니다.
                         // 메세지를 모두에게 보냅니다. (사용자가 메세지를 전송했습니다.)
-                        else if(connectionNumber == 1100)
+                        else if(connectionNumber == ServerProperty.PLAYER_MESSAGE_RECEIVED)
                         {
-                            String who = jo.get("nickname").getAsString();
+                            Gson playerGson = new GsonBuilder().serializeNulls().registerTypeAdapter(Player.class, new PlayerAdapter()).create();
+                            Player player = playerGson.fromJson(jo.get("player"), PlayerFramework.class);
+
+                            String who = player.getNickname();
                             String message = jo.get("message").getAsString();
-                            Player player = GameServer.getPlayer(who);
 
                             String finalMessage = who + "(" + player.getId() + ") : " + message;
 
@@ -209,9 +225,16 @@ public class ServerConnectionReceiver
                             GameServer.getConsoleSender().sendAll(finalMessage);
                         }
 
-                        else if(connectionNumber == 1200)
+                        //
+                        // 방을 생성할 때 그런 정보를 담고 있는 패킷을 받았을 때입니다.
+                        else if(connectionNumber == ServerProperty.ROOM_CREATE)
                         {
-
+                            Gson gson = new GsonBuilder().serializeNulls().registerTypeAdapter(Player.class, new PlayerAdapter()).create();
+                            Player player = gson.fromJson(jo.get("player"), PlayerFramework.class);
+                            String roomName = jo.get("roomName").getAsString();
+                            RoomFramework room = (RoomFramework) RoomFramework.generate(player, roomName);
+                            room.setCreateDate(GameServer.getServer().getDateFormat().format(new Date()));
+                            ConnectionBackground.getRoomMap().put(player, room);
                         }
 
                         else
