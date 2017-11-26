@@ -6,8 +6,6 @@ import com.ruskonert.GamblKing.engine.GameServer;
 import com.ruskonert.GamblKing.engine.connect.packet.PlayerMessagePacket;
 import com.ruskonert.GamblKing.entity.Player;
 import com.ruskonert.GamblKing.framework.PlayerEntityFramework;
-
-import javax.naming.OperationNotSupportedException;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -15,17 +13,6 @@ import java.io.IOException;
 
 public class PlayerFramework extends PlayerEntityFramework implements Player
 {
-    @Override
-    public boolean isEnteredRoom()
-    {
-        try {
-            throw new OperationNotSupportedException("Not implemented");
-        } catch (OperationNotSupportedException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     /**
      * 플레이어에게 메세지를 보냅니다.
      *  클라이언트에 채팅 메세지 박스에 접근해야 하므로 패킷을 보냅니다.

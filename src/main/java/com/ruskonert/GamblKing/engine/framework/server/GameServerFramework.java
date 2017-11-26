@@ -4,13 +4,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ruskonert.GamblKing.engine.GameServer;
 import com.ruskonert.GamblKing.engine.connect.BindConnection;
+import com.ruskonert.GamblKing.engine.connect.ConnectionBackground;
 import com.ruskonert.GamblKing.engine.entity.OfflinePlayer;
 import com.ruskonert.GamblKing.engine.framework.ChannelFramework;
 import com.ruskonert.GamblKing.engine.framework.entity.PlayerFramework;
 import com.ruskonert.GamblKing.engine.server.Channel;
-import com.ruskonert.GamblKing.program.ConsoleSender;
 import com.ruskonert.GamblKing.engine.server.Server;
 import com.ruskonert.GamblKing.entity.Player;
+import com.ruskonert.GamblKing.program.ConsoleSender;
 import com.ruskonert.GamblKing.util.ReflectionUtil;
 import com.ruskonert.GamblKing.util.SystemUtil;
 
@@ -85,6 +86,13 @@ public final class GameServerFramework implements Server
     @Override
     public Player getPlayer(String id)
     {
+        if(ConnectionBackground.getGameClientMap().keySet().size() != 0)
+        {
+            for(Player p : ConnectionBackground.getGameClientMap().keySet())
+            {
+                if(p.getId().equalsIgnoreCase(id) || p.getNickname().equalsIgnoreCase(id)) return p;
+            }
+        }
         if(! new File("data/player/").exists())
         {
             return null;

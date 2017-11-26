@@ -42,7 +42,7 @@ public final class ApplicationLoader extends Application implements ProgramIniti
         this.onInit();
         Task<Void> task = new Task<Void>() {
             @Override
-            protected Void call() throws Exception
+            protected Void call()
             {
                 Platform.runLater(() -> {
                     AppFramework framework = new ProgramApplication();

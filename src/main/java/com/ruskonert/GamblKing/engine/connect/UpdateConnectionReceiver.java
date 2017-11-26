@@ -4,8 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.ruskonert.GamblKing.engine.GameServer;
 import com.ruskonert.GamblKing.engine.framework.entity.PlayerFramework;
+import com.ruskonert.GamblKing.framework.PlayerEntityFramework;
 import com.ruskonert.GamblKing.property.ServerProperty;
 import com.ruskonert.GamblKing.util.SystemUtil;
+
 import javafx.concurrent.Task;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -39,7 +41,7 @@ public class UpdateConnectionReceiver
 
     private Task<Void> taskBackground = new Task<Void>() {
         @Override
-        protected Void call() throws Exception
+        protected Void call()
         {
             try
             {
@@ -84,7 +86,7 @@ public class UpdateConnectionReceiver
                         // 해당 클라이언트에 대한 정보를 서버에 연결시킵니다.
                         else if(connectionNumber == ServerProperty.SEND_UPDATE_FILE_REQUEST_COMPLETED)
                         {
-                            PlayerFramework player = (PlayerFramework) GameServer.getPlayer(jo.get("id").getAsString());
+                            PlayerEntityFramework player = (PlayerEntityFramework) GameServer.getPlayer(jo.get("id").getAsString());
 
                             player.setLastConnected(GameServer.getServer().getDateFormat().format(new Date()));
                             player.setHostAddress(address.getHostAddress());
@@ -95,10 +97,6 @@ public class UpdateConnectionReceiver
                             object.addProperty("player", new Gson().toJson(player));
                             GameServer.getConsoleSender().log(player.getNickname() + "(" + player.getId() + ") joined the game.");
                             out.writeUTF(object.toString());
-
-                            // 로그인 서버 접속을 종료시킵니다.
-                            // 즉, 게임 서버에 본격적으로 접속합니다.
-                            UpdateConnectionReceiver.leave(jo.get("ipAddress").getAsString());
                         }
                     }
                     catch(Exception e)
@@ -112,7 +110,8 @@ public class UpdateConnectionReceiver
             } catch(Exception e)
             {
                 e.printStackTrace();
-                leave(address);
+                System.out.println(address.getHostAddress() + " was disconnected. reset the update data");
+                ConnectionBackground.leaveFromStream(out);
             }
             return null;
         }
@@ -143,6 +142,7 @@ public class UpdateConnectionReceiver
         ConnectionBackground.getUpdateClientMap().remove(address);
         GameServer.getServer().getConsoleSender().log(address + " disconnected the update server");
     }
+
 
     public synchronized void asyncStart()
     {

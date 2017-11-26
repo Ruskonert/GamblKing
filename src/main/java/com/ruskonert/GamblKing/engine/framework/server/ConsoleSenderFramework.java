@@ -110,7 +110,7 @@ public class ConsoleSenderFramework extends TargetBuilder<ConsoleSenderFramework
         {
             // 지금 게임에 접속중인 플레이어가 게임중일 때는 메인 화면에 메세지를 보내지 않습니다.
             // 왜냐하면 게임 중에는 홈에 있는 채팅 창을 볼 수 없습니다.
-            //if(! p.isEnteredRoom()) continue;
+            if(p.isEnteredRoom()) continue;
             p.sendMessage(message);
         }
     }

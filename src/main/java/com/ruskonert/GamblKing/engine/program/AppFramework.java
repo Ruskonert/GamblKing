@@ -5,6 +5,7 @@ import com.ruskonert.GamblKing.engine.ProgramApplication;
 import com.ruskonert.GamblKing.engine.event.program.ConsoleLayoutEvent;
 import com.ruskonert.GamblKing.engine.event.program.SettingLayoutEvent;
 import com.ruskonert.GamblKing.engine.framework.server.GameServerFramework;
+import com.ruskonert.GamblKing.engine.listener.PlayerConnectListener;
 import com.ruskonert.GamblKing.engine.program.component.ProgramComponent;
 import com.ruskonert.GamblKing.engine.server.Server;
 import com.ruskonert.GamblKing.program.ConsoleSender;
@@ -60,14 +61,13 @@ public class AppFramework extends StageBuilder
         primaryStage.setScene(new Scene(parent, ProgramComponent.PROGRAM_WIDTH, ProgramComponent.PROGRAM_HEIGHT));
 
         // 이벤트 등록
-        // this.registerEvent(new PlayerConnectListener());
+        this.registerEvent(new PlayerConnectListener());
 
         AppFramework.ApplictionStage = primaryStage;
         primaryStage.show();
     }
 
-    private void BindServerConnection() throws NoSuchFieldException, IllegalAccessException
-    {
+    private void BindServerConnection() {
         GameServerFramework.generate();
         Server server = GameServer.getServer();
         ConsoleSender sender = server.getConsoleSender();
@@ -93,16 +93,7 @@ public class AppFramework extends StageBuilder
      */
     private void onEnableInner()
     {
-        try
-        {
-            this.BindServerConnection();
-        }
-        catch (NoSuchFieldException | IllegalAccessException e)
-        {
-            SystemUtil.Companion.error(e);
-            return;
-        }
-
+        this.BindServerConnection();
         GameServer.getServer().getConsoleSender().log("The program was loaded successfully.");
     }
 
@@ -132,12 +123,5 @@ public class AppFramework extends StageBuilder
         this.registerEvent(new SettingLayoutEvent());
         // more events...
     }
-
-    /**
-     * 미리 만들어 둔 서버 이벤트를 등록합니다.
-     */
-    private void registerDefaultEvents() {
-        // this.registerEvent(new PlayerConnectListener());
-        // more events...
-    }
+    
 }

@@ -1,9 +1,9 @@
 package com.ruskonert.GamblKing.engine.connect.packet;
 
 import com.ruskonert.GamblKing.connect.Packet;
+import com.ruskonert.GamblKing.engine.connect.ConnectionBackground;
 
 import java.io.DataOutputStream;
-import java.net.SocketException;
 
 public abstract class ServerPacket extends Packet
 {
@@ -23,5 +23,11 @@ public abstract class ServerPacket extends Packet
     public void sendPacket(Packet packet)
     {
         packet.send(out, packet);
+    }
+
+    @Override
+    public void exit(DataOutputStream stream)
+    {
+        ConnectionBackground.leaveFromStream(stream);
     }
 }

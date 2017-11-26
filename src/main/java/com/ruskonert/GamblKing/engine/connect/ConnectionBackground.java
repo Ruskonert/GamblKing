@@ -1,12 +1,12 @@
 package com.ruskonert.GamblKing.engine.connect;
 
-import com.ruskonert.GamblKing.connect.packet.RoomRefreshPacket;
 import com.ruskonert.GamblKing.engine.GameServer;
+import com.ruskonert.GamblKing.engine.connect.packet.RoomRefreshPacket;
 import com.ruskonert.GamblKing.entity.Player;
 import com.ruskonert.GamblKing.entity.Room;
 import com.ruskonert.GamblKing.property.ServerProperty;
-
 import javafx.concurrent.Task;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -28,15 +28,40 @@ public final class ConnectionBackground
     public static Map<String, DataOutputStream> getClientMap() { return clientMap; }
 
     // 게임 클라이언트 리시버러를 Player별로 나눕니다.
-    private static Map<Player, Socket> gameClientMap = new ConcurrentHashMap<>();
-    public static Map<Player, Socket> getGameClientMap() { return gameClientMap; }
-    public static DataOutputStream getPlayerOutputStream(Player player) {
-        try {
-            return new DataOutputStream(gameClientMap.get(player).getOutputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
+    private static Map<Player, DataOutputStream> gameClientMap = new ConcurrentHashMap<>();
+    public static Map<Player, DataOutputStream> getGameClientMap() { return gameClientMap; }
+    public static DataOutputStream getPlayerOutputStream(Player player)
+    {
+        if(gameClientMap.get(player) == null)
+        {
+            for(Player p : getGameClientMap().keySet())
+            {
+                if(p.getId().equalsIgnoreCase(player.getId()))
+                {
+                    return gameClientMap.get(p);
+                }
+            }
+            return null;
         }
-        return null;
+        else
+        {
+            return gameClientMap.get(player);
+        }
+    }
+
+    // 플레이어 정보를 새로 저장합니다.
+    public static void refreshPlayer(Player player)
+    {
+        for(Player p : getGameClientMap().keySet())
+        {
+            if(p.getId().equalsIgnoreCase(player.getId()) && p.getNickname().equalsIgnoreCase(player.getNickname()))
+            {
+                DataOutputStream stream = getGameClientMap().get(p);
+                getGameClientMap().remove(p);
+                getGameClientMap().put(player, stream);
+                break;
+            }
+        }
     }
 
     // 클라이언트 리시버를 IP 별로 나눕니다.
@@ -51,19 +76,64 @@ public final class ConnectionBackground
     private static Map<Player, Room> roomMap = new ConcurrentHashMap<>();
     public static Map<Player, Room> getRoomMap() { return roomMap; }
 
-
-    public static void refreshRoom(Player target)
+    public static Player getPlayerFromStream(DataOutputStream stream)
     {
-        RoomRefreshPacket packet = new RoomRefreshPacket(roomMap.values().toArray(new Room[roomMap.size()]));
+        for(Player p : gameClientMap.keySet())
+        {
+            DataOutputStream o = gameClientMap.get(p);
+            if(o == stream)
+                return p;
+        }
+        return null;
+    }
+
+
+
+    public synchronized static void refreshRoom(Player target)
+    {
         try {
-            packet.send(getGameClientMap().get(target).getOutputStream());
-        } catch (IOException e) {
+            if (target.isEnteredRoom()) return;
+            RoomRefreshPacket packet = new RoomRefreshPacket(roomMap.values().toArray(new Room[roomMap.size()]));
+            packet.send(getGameClientMap().get(target));
+        }
+        catch(NullPointerException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public synchronized static void refreshRoom(DataOutputStream o)
+    {
+        try{
+            if (getPlayerFromStream(o).isEnteredRoom()) return;
+            RoomRefreshPacket packet = new RoomRefreshPacket(roomMap.values().toArray(new Room[roomMap.size()]));
+            packet.send(o);
+        }
+        catch(NullPointerException e)
+        {
             e.printStackTrace();
         }
     }
 
 
-    public void initialize() throws IOException
+    public static void leaveFromStream(DataOutputStream stream)
+    {
+        for(Player p : ConnectionBackground.getGameClientMap().keySet())
+        {
+            if(ConnectionBackground.getGameClientMap().get(p) == stream || ConnectionBackground.getUpdateClientMap().get(p.getHostAddress()) == stream)
+            {
+                String address = p.getHostAddress();
+                ConnectionBackground.getRoomMap().remove(p);
+                ConnectionBackground.getClientMap().remove(address);
+                ConnectionBackground.getUpdateClientMap().remove(address);
+                ConnectionBackground.getGameClientMap().remove(p);
+                return;
+            }
+        }
+    }
+
+
+    public void initialize()
     {
         Task<Void> task = new Task<Void>() {
             @Override
@@ -121,17 +191,34 @@ public final class ConnectionBackground
             }
         };
 
+
+        /**
+         *
+         */
         Task<Void> roomTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception
             {
                 while(true)
                 {
-                    for (Player p : ConnectionBackground.getGameClientMap().keySet()) {
-                        ConnectionBackground.refreshRoom(p);
+                    Player p = null;
+                    try {
+                        for (Player p2 : ConnectionBackground.getGameClientMap().keySet()) {
+                            p = p2;
+                            ConnectionBackground.refreshRoom(p2);
+                            Thread.sleep(3700L);
+                        }
                     }
-                    Thread.sleep(3000L);
-                    return null;
+                    catch(RuntimeException e)
+                    {
+
+                        // 최종적으로 오류를 검증합니다.
+                        // 만약 이 플레이어가 방까지 만들었다면, 제거합니다.
+                        ConnectionBackground.getRoomMap().remove(p);
+                        // 게임을 비정상적으로 나간 경우입니다. 이런 경우 강제로 없앱니다.
+                        ConnectionBackground.getGameClientMap().remove(p);
+                        e.printStackTrace();
+                    }
                 }
             }
         };
@@ -143,10 +230,9 @@ public final class ConnectionBackground
         Thread updateThread = new Thread(updateTask);
         updateThread.start();
 
-        Thread rThread = new Thread(roomTask);
-        ConnectionBackground.roomThread = rThread;
+        ConnectionBackground.roomThread = new Thread(roomTask);
 
-        rThread.start();
+        roomThread.start();
 
     }
 
